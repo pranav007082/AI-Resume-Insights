@@ -1,0 +1,20 @@
+{% comment %} <!-- ats/resumeReviewResults.html -->
+<h1>Resume Review Results</h1>
+{% for key, value in conversation.items %}
+    <h2>{{ key|upper }}</h2>
+    {% if value %}
+        <ul>
+            {% if value|length > 0 and value|first is string %}
+                <li>{{ value }}</li>
+            {% else %}
+                {% for item in value %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    {% endif %}
+    <hr>
+{% endfor %} {% endcomment %}
+
+<h2>Extracted Resume Text</h2>
+<pre>{{ lines }}</pre>
