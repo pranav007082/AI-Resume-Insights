@@ -243,10 +243,6 @@ def load_conversation(filename='conversation.json'):
 def home(request):
     return render(request, 'ats/home.html')
 
-
-
-
-
 def resumeReview(request):
     if request.method == 'POST':
         form = ResumeUploadForm(request.POST, request.FILES)
