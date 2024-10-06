@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import ResumeUploadForm
+import PyPDF2
 from django.http import HttpResponse
 from copy import deepcopy
 from typing import Dict, TypedDict, Optional
@@ -10,6 +12,7 @@ import google.generativeai as genai
 from langchain_google_genai import ChatGoogleGenerativeAI
 import time
 import os
+import json
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -167,7 +170,7 @@ prompt_superagent = ("You are a Resume Expert tasked with giving a final score b
 
 
 agent_subagent_pairs={}
-for main_key, nested_dict in subagent_desc.items():  # Fix variable name
+for main_key, nested_dict in subagent_desc.items():  
     pairs = {main_key: list(nested_dict.keys())}
     agent_subagent_pairs.update(pairs)
 
@@ -226,15 +229,23 @@ workflow.add_edge('handle_superagent',END)
 app = workflow.compile()
 
 
+def save_conversation(conversation, filename='conversation.json'):
+    with open(filename, 'w') as f:
+        json.dump(conversation, f, indent=4)
+
+def load_conversation(filename='conversation.json'):
+    with open(filename, 'r') as f:
+        conversation = json.load(f)
+    return conversation
+
+
 # Views
 def home(request):
     return render(request, 'ats/home.html')
 
 
 
-from django.shortcuts import render, redirect
-from .forms import ResumeUploadForm
-import PyPDF2
+
 
 def resumeReview(request):
     if request.method == 'POST':
@@ -256,10 +267,9 @@ def resumeReview(request):
             # Join lines to pass into the context
             lines = '\n'.join(lines)
 
-            # Process the resume using your agent workflow
-            # Example pseudo-code:
-            # agent = list(agent_subagent_pairs.keys())[0]
-            # subagent = agent_subagent_pairs[agent][0]
+
+            agent = list(agent_subagent_pairs.keys())[0]
+            subagent = agent_subagent_pairs[agent][0]
             # conversation = app.invoke({
             #     'subagent_feedback': [],
             #     'agent_feedback': [],
@@ -270,8 +280,11 @@ def resumeReview(request):
             #     'subagent': subagent
             # }, {'recursion_limit': 100})
 
+            # save_conversation(conversation)
+            conversation=load_conversation()
+
             # Render the results
-            context = {'lines': lines}
+            context = {'lines': lines,'conversation':conversation}
             return render(request, 'ats/resumeReview.html', context)
     else:
         form = ResumeUploadForm()
