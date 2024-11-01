@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     build: ./backend
@@ -7,19 +5,19 @@ services:
     volumes:
       - ./backend/:/usr/src/backend/
     ports:
-      - 8000:8000
+      - "8001:8000"  # Change the exposed port
     env_file:
       - ./.env.dev
     depends_on:
-      - db
-  db:
+      - airesume_db
+  airesume_db:
     image: postgres:15
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - airesume_postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgresuser
       - POSTGRES_PASSWORD=postgrespassword
       - POSTGRES_DB=airesumeinsights
 
 volumes:
-  postgres_data:
+  airesume_postgres_data:
