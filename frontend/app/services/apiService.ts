@@ -35,9 +35,11 @@ const apiService = {
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
                 method: 'POST',
                 body: data,
-                // headers: {
-                //     'Authorization': `Bearer ${token}`
-                // }
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${token}`
+                }
             })
                 .then(response => response.json())
                 .then((json) => {

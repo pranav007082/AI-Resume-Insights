@@ -1,11 +1,38 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import apiService from "@/app/services/apiService";
+import { handleLogin } from "@/app/lib/actions";
 import Link from "next/link";
 import "../../styles/style.css";
+
 export default function SignIn() {
+  const router =useRouter()
+    
+    const [email,setEmail]=useState('');
+    const [password,setPassword]=useState('')
+    const [errors,setErrors]=useState<string[]>([]);
+    const submitLogin=async(event:any)=>{
+      event.preventDefault();
+      const formData={
+          email:email,
+          password:password
+      }
+      const response=await apiService.post('/api/auth/login/',JSON.stringify(formData))
+      console.log(response)
+      if(response.access){
+          handleLogin(response.user.pk,response.access,response.refresh)
+          router.push('/')
+      }else{
+          console.log(errors)
+          setErrors(response.non_field_errors);
+      }
+  }
   return (
+
     <>
-      <>
+      
         <div className="mb-10">
           <h1 className="text-4xl font-bold">Login to your account</h1>
         </div>
@@ -24,6 +51,7 @@ export default function SignIn() {
                 className="form-input w-full py-2"
                 type="email"
                 placeholder="johndoe@email.com"
+                onChange={(e)=>setEmail(e.target.value)}
                 required
               />
             </div>
@@ -40,17 +68,25 @@ export default function SignIn() {
                 type="password"
                 autoComplete="on"
                 placeholder="••••••••"
+                onChange={(e)=>setPassword(e.target.value)}
                 required
               />
             </div>
           </div>
           <div className="mt-6">
-            <button className="btn w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]">
+            <button type='button' onClick={submitLogin} className="btn w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]">
             Log In
             </button>
             
           </div>
           
+            {errors.map((error,index)=>{
+                    return (
+                        <div  key={`error_${index}`} className="mt-3 p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                                {error}
+                        </div>
+                    )
+                })}
         </form>
         <div className="mt-3 mb-3 text-center text-sm italic text-gray-400">Or</div>
           <button className="btn w-full bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-100 hover:shadow-md">
@@ -72,7 +108,7 @@ export default function SignIn() {
             Forgot password
           </Link>
         </div>
-      </>
+      
     </>
   );
 }
