@@ -22,7 +22,7 @@ export default function ResetPassword() {
               id="email"
               className="form-input w-full py-2"
               type="email"
-              placeholder="corybarker@email.com"
+              placeholder="johndoe@email.com"
               required
             />
           </div>

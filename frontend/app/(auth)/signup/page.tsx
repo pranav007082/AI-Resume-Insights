@@ -7,7 +7,6 @@ export default function SignUp() {
         <h1 className="text-4xl font-bold">Create your account</h1>
       </div>
 
-      {/* Form */}
       <form>
         <div className="space-y-4">
           <div>
@@ -21,7 +20,7 @@ export default function SignUp() {
               id="name"
               className="form-input w-full py-2"
               type="text"
-              placeholder="Corey Barker"
+              placeholder="John Doe"
               required
             />
           </div>
@@ -36,22 +35,7 @@ export default function SignUp() {
               id="email"
               className="form-input w-full py-2"
               type="email"
-              placeholder="corybarker@email.com"
-              required
-            />
-          </div>
-          <div>
-            <label
-              className="mb-1 block text-sm font-medium text-gray-700"
-              htmlFor="phone"
-            >
-              Phone
-            </label>
-            <input
-              id="phone"
-              className="form-input w-full py-2"
-              type="text"
-              placeholder="(+750) 932-8907"
+              placeholder="johndoe@email.com"
               required
             />
           </div>
@@ -74,11 +58,18 @@ export default function SignUp() {
         </div>
         <div className="mt-6 space-y-3">
           <button className="btn w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]">
-            Register
+            Sign up
           </button>
           <div className="text-center text-sm italic text-gray-400">Or</div>
-          <button className="btn w-full bg-gradient-to-t from-gray-900 to-gray-700 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]">
-            Continue with GitHub
+          <button className="btn w-full bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-100 hover:shadow-md">
+            <span className="flex items-center justify-center">
+              <img
+                src="https://www.google.com/favicon.ico"
+                alt="Google logo"
+                className="h-5 w-5 mr-2"
+              />
+              Continue with Google
+            </span>
           </button>
         </div>
       </form>
