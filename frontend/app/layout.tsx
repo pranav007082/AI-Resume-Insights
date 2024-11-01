@@ -11,6 +11,9 @@ const inter = Inter({
 export const metadata = {
   title: "AI Resume Insights",
   description: "Elevate Your Resume, Unlock Your Career Potential",
+  icons: {
+    icon: "./favicon1.ico",
+  },
 };
 
 export default function RootLayout({
