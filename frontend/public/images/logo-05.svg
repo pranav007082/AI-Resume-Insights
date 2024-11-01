@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="none">
-  <path fill="url(#a)" d="M14.223 24.584c-.639.805-1.934.364-1.95-.663L12.05 8.9h10.1c1.829 0 2.85 2.112 1.712 3.545l-9.638 12.138Z"/>
-  <path fill="url(#b)" fill-opacity=".2" d="M14.223 24.584c-.639.805-1.934.364-1.95-.663L12.05 8.9h10.1c1.829 0 2.85 2.112 1.712 3.545l-9.638 12.138Z"/>
-  <path fill="#3ECF8E" d="M10.116.415c.639-.804 1.934-.363 1.949.664l.099 15.02H2.19c-1.83 0-2.85-2.113-1.712-3.545L10.116.415Z"/>
-  <defs>
-    <linearGradient id="a" x1="12.049" x2="21.025" y1="12.231" y2="15.995" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#249361"/>
-      <stop offset="1" stop-color="#3ECF8E"/>
-    </linearGradient>
-    <linearGradient id="b" x1="8.069" x2="12.163" y1="6.782" y2="14.488" gradientUnits="userSpaceOnUse">
-      <stop/>
-      <stop offset="1" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 129 129" style="enable-background:new 0 0 129 129;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#F25022;}
+	.st1{fill:#7FBA00;}
+	.st2{fill:#00A4EF;}
+	.st3{fill:#FFB900;}
+</style>
+<path class="st0" d="M0,0h61.3v61.3H0V0z"/>
+<path class="st1" d="M67.7,0H129v61.3H67.7V0z"/>
+<path class="st2" d="M0,67.7h61.3V129H0V67.7z"/>
+<path class="st3" d="M67.7,67.7H129V129H67.7V67.7z"/>
 </svg>

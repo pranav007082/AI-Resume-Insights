@@ -30,16 +30,15 @@ export default function LargeTestimonial() {
               />
             </div>
             <p className="text-2xl font-bold text-gray-900">
-              “Simple has simplified my life in more ways than one. From
-              managing my sites to{" "}
-              <em className="italic text-gray-500">keeping track of tasks</em>,
-              it's become my go-to tool for everything.”
+              “I’ve used a few resume review services before, but this one stands out for its honesty and {" "}
+              <em className="italic text-gray-500">attention to detail.</em>,
+              it's become my go-to tool for resume reviews.”
             </p>
             <div className="text-sm font-medium text-gray-500">
-              <span className="text-gray-700">Mary Sullivan</span>{" "}
-              <span className="text-gray-400">/</span>{" "}
+              <span className="text-gray-700">John Doe</span>{" "}
+              <span className="text-gray-400">-</span>{" "}
               <a className="text-blue-500" href="#0">
-                CTO at Microsoft
+                SWE at Microsoft
               </a>
             </div>
           </div>
