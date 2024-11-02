@@ -1,11 +1,11 @@
 import Image from "next/image";
 import PageIllustration from "./Stripes";
-import Avatar01 from "../../public/images/avatar-01.jpg";
-import Avatar02 from "../../public/images/avatar-02.jpg";
-import Avatar03 from "../../public/images/avatar-03.jpg";
-import Avatar04 from "../../public/images/avatar-04.jpg";
-import Avatar05 from "../../public/images/avatar-05.jpg";
-import Avatar06 from "../../public/images/avatar-06.jpg";
+import Avatar01 from "../../public/images/logo-02.svg";
+import Avatar02 from "../../public/images/logo-03.svg";
+import Avatar03 from "../../public/images/logo-04.svg";
+import Avatar04 from "../../public/images/logo-05.svg";
+import Avatar05 from "../../public/images/logo-06.svg";
+import Avatar06 from "../../public/images/logo-07.svg";
 
 export default function HeroHome() {
   return (
@@ -20,7 +20,7 @@ export default function HeroHome() {
               className="mb-6 border-y [border-image:linear-gradient(to_right,transparent,theme(colors.slate.300/.8),transparent)1]"
               data-aos="zoom-y-out"
             >
-              <div className="-mx-0.5 flex justify-center -space-x-3">
+              <div className="-mx-0.5 flex justify-center space-x-2">
                 <Image
                   className="box-content rounded-full border-2 border-gray-50"
                   src={Avatar01}
