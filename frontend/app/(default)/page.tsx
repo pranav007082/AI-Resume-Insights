@@ -1,8 +1,8 @@
-import Hero from "../components/hero-home";
-import BusinessCategories from "../components/business-categories";
-import FeaturesPlanet from "../components/features-planet";
-import LargeTestimonial from "../components/large-testimonial";
-import Cta from "../components/cta";
+import Hero from "../components/Hero";
+import BusinessCategories from "../components/Companies";
+import FeaturesPlanet from "../components/Features";
+import LargeTestimonial from "../components/Testimonials";
+import Cta from "../components/PreFooter";
 
 export default function Home() {
   return (

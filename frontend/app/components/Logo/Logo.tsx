@@ -1,8 +1,16 @@
+'use client';
 import Link from "next/link";
 
 export default function Logo() {
+  const scrollToTop = (e:any) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
-    <Link href="/" className="inline-flex" aria-label="ISTE">
+    <Link href="/" onClick={scrollToTop} className="inline-flex " aria-label="ISTE">
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28">
         <path
           className="fill-blue-500"
@@ -20,3 +28,4 @@ export default function Logo() {
     </Link>
   );
 }
+

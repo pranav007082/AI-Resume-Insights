@@ -1,19 +1,25 @@
+'use client';
 import Image from "next/image";
 import Logo from "../components/Logo/Logo";
 import AuthBg from "../../public/images/auth-bg.svg";
-
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router=useRouter()
+  const handleLogoClick = () => {
+    router.push('/');
+  };
   return (
     <>
       <header className="absolute z-30 w-full">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex h-16 items-center justify-between md:h-20">
-            <div className="mr-4 shrink-0">
-              <Logo />
+            <div className="mr-4 shrink-0" onClick={handleLogoClick}>
+              <Logo/>
             </div>
           </div>
         </div>
