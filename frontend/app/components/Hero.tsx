@@ -1,4 +1,3 @@
-'use client';
 import Image from "next/image";
 import PageIllustration from "./Stripes";
 import Logo02 from "@/public/images/logo-02.svg";

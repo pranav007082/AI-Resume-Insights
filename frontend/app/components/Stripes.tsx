@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import Stripes from "@/public/images/stripes.svg";
 
 export default function _Stripes() {
