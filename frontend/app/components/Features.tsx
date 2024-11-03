@@ -1,10 +1,10 @@
 import Image from "next/image";
-import PlanetImg from "../../public/images/planet.png";
-import PlanetOverlayImg from "../../public/images/planet-overlay.svg";
-import PlanetTagImg01 from "../../public/images/planet-tag-01.png";
-import PlanetTagImg02 from "../../public/images/planet-tag-02.png";
-import PlanetTagImg03 from "../../public/images/planet-tag-03.png";
-import PlanetTagImg04 from "../../public/images/planet-tag-04.png";
+import PlanetImg from "@/public/images/planet.png";
+import PlanetOverlayImg from "@/public/images/planet-overlay.svg";
+import langchainGit from "@/public/images/langchain_git.png";
+import djangoGit from "@/public/images/django_git.png";
+import typescriptGit from "@/public/images/typescript_git.png";
+import nextjsGit from "@/public/images/nextjs_git.png";
 
 export default function Features() {
   return (
@@ -39,28 +39,28 @@ export default function Features() {
                   <div>
                     <Image
                       className="absolute -left-28 top-16 z-10 animate-[float_4s_ease-in-out_infinite_both] opacity-80 transition-opacity duration-500"
-                      src={PlanetTagImg01}
+                      src={langchainGit}
                       width={253}
                       height={56}
                       alt="Tag 01"
                     />
                     <Image
                       className="absolute left-56 top-7 z-10 animate-[float_4s_ease-in-out_infinite_1s_both] opacity-30 transition-opacity duration-500"
-                      src={PlanetTagImg02}
+                      src={djangoGit}
                       width={241}
                       height={56}
                       alt="Tag 02"
                     />
                     <Image
                       className="absolute -left-20 bottom-24 z-10 animate-[float_4s_ease-in-out_infinite_2s_both] opacity-25 transition-opacity duration-500"
-                      src={PlanetTagImg03}
+                      src={typescriptGit}
                       width={243}
                       height={56}
                       alt="Tag 03"
                     />
                     <Image
                       className="absolute bottom-32 left-64 z-10 animate-[float_4s_ease-in-out_infinite_3s_both] opacity-80 transition-opacity duration-500"
-                      src={PlanetTagImg04}
+                      src={nextjsGit}
                       width={251}
                       height={56}
                       alt="Tag 04"
