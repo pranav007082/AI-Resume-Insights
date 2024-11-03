@@ -28,4 +28,5 @@ TailwindCSS \
 Docker \
 Gemini \
 Langchain \
-LangGraph 
+LangGraph \
+Zustand

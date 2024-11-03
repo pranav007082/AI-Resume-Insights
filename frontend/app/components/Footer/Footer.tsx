@@ -176,6 +176,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
                   className="flex items-center justify-center text-blue-500 transition hover:text-blue-600"
                   href="https://github.com/Nithin1729S/AI-Resume-Insights"
                   aria-label="Github"
+                  target="_blank"
                 >
                   <svg
                     className="h-8 w-8 fill-current"
