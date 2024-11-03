@@ -1,10 +1,11 @@
+'use client';
 import Image from "next/image";
 import PageIllustration from "./Stripes";
 import Logo02 from "@/public/images/logo-02.svg";
 import Logo03 from "@/public/images/logo-03.svg";
 import Logo04 from "@/public/images/logo-04.svg";
 import Logo05 from "@/public/images/logo-05.svg";
-import Logo06 from "@/public/images/logo-06.svg";
+import Logo10 from "@/public/images/logo-10.svg";
 import Logo07 from "@/public/images/logo-07.svg";
 import ModalVideo from "./Modals/modal-video";
 import VideoThumb from "@/public/images/hero-image-01.jpg";
@@ -45,7 +46,7 @@ export default function HeroHome() {
                   alt="Avatar 02"
                 />
                 <Image
-                  className="box-content rounded-full border-2 border-gray-50"
+                  className="box-content border-2 border-gray-50"
                   src={Logo05}
                   width={32}
                   height={32}
@@ -53,7 +54,7 @@ export default function HeroHome() {
                 />
                 <Image
                   className="box-content rounded-full border-2 border-gray-50"
-                  src={Logo06}
+                  src={Logo10}
                   width={32}
                   height={32}
                   alt="Avatar 04"
@@ -81,7 +82,9 @@ export default function HeroHome() {
                 data-aos="zoom-y-out"
                 data-aos-delay={300}
               >
-                AI Resume Insights is a modern resume builder powered by AI, helping you create standout resumes that open doors to your dream job.
+                AI Resume Insights is a modern resume builder powered by AI,
+                helping you create standout resumes that open doors to your
+                dream job.
               </p>
               <div className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,theme(colors.slate.300/.8),transparent)1]">
                 <div
@@ -92,14 +95,22 @@ export default function HeroHome() {
                   <a
                     className="btn group mb-4 w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
                     href="#0"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default anchor behavior
+                      window.scrollBy({
+                        top: 420, 
+                        behavior: "smooth", 
+                      });
+                    }}
                   >
                     <span className="relative inline-flex items-center">
-                     TBD {" "}
+                      Show Demo{" "}
                       <span className="ml-1 tracking-normal text-blue-300 transition-transform group-hover:translate-x-0.5">
                         -&gt;
                       </span>
                     </span>
                   </a>
+
                   <a
                     className="btn w-full bg-white text-gray-800 shadow hover:bg-gray-50 sm:ml-4 sm:w-auto"
                     href="#0"

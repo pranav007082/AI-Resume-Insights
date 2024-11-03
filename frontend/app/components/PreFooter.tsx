@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Stripes from "@/public/images/stripes-dark.svg";
 
@@ -37,9 +38,16 @@ export default function Cta() {
               <a
                 className="btn group mb-4 w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
                 href="#0"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default anchor behavior
+                  window.scrollBy({
+                    top: -2800, // Scroll down 5 centimeters (approx. 50 pixels)
+                    behavior: "smooth", // Smooth scrolling
+                  });
+                }}
               >
                 <span className="relative inline-flex items-center">
-                  TBD{" "}
+                  Show Demo{" "}
                   <span className="ml-1 tracking-normal text-blue-300 transition-transform group-hover:translate-x-0.5">
                     -&gt;
                   </span>

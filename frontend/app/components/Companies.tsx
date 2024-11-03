@@ -8,7 +8,8 @@ import Logo06 from "@/public/images/logo-06.svg";
 import Logo07 from "@/public/images/logo-07.svg";
 import Logo08 from "@/public/images/logo-08.svg";
 import Logo09 from "@/public/images/logo-09.svg";
-
+import Logo10 from "@/public/images/logo-10.svg";
+import Logo11 from "@/public/images/logo-11.svg";
 export default function BusinessCategories() {
   return (
     <section>
