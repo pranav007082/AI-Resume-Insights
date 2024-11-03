@@ -1,17 +1,17 @@
 import Hero from "../components/Hero";
-import BusinessCategories from "../components/Companies";
-import FeaturesPlanet from "../components/Features";
-import LargeTestimonial from "../components/Testimonials";
-import Cta from "../components/PreFooter";
+import Companies from "../components/Companies";
+import Features from "../components/Features";
+import Testimonial from "../components/Testimonials";
+import PreFooter from "../components/PreFooter";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <BusinessCategories />
-      <FeaturesPlanet />
-      <LargeTestimonial />
-      <Cta />
+      <Companies />
+      <Features />
+      <Testimonial />
+      <PreFooter />
     </>
   );
 }

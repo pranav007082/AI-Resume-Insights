@@ -118,7 +118,6 @@ export default function SignUp() {
             </span>
           </button>
 
-      {/* Bottom link */}
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-500">
           By signing up, you agree to the{" "}

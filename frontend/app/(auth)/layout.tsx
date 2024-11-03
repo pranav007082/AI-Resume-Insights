@@ -1,8 +1,5 @@
 'use client';
-import Image from "next/image";
 import Logo from "../components/Logo/Logo";
-import AuthBg from "../../public/images/auth-bg.svg";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 export default function AuthLayout({
   children,

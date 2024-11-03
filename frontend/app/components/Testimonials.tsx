@@ -1,7 +1,7 @@
 import Image from "next/image";
 import TestimonialImg from "../../public/images/large-testimonial.jpg";
 
-export default function LargeTestimonial() {
+export default function Testimonial() {
   return (
     <section>
       <div className="mx-auto max-w-2xl px-4 sm:px-6">

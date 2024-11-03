@@ -99,7 +99,6 @@ export default function SignIn() {
               Continue with Google
             </span>
           </button>
-        {/* Bottom link */}
         <div className="mt-6 text-center">
           <Link
             className="text-sm text-gray-700 underline hover:no-underline"

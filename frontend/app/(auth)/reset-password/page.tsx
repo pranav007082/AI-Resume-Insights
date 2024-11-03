@@ -8,7 +8,6 @@ export default function ResetPassword() {
         <h1 className="text-4xl font-bold">Reset password</h1>
       </div>
 
-      {/* Form */}
       <form>
         <div className="space-y-4">
           <div>
