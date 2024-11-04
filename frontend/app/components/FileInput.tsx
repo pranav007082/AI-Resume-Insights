@@ -19,7 +19,14 @@ const FileInput = () => {
     }
   };
 
-  const truncateFileName = (fileName: string, maxLength: number):string => {
+  const handleSubmit = () => {
+    // Handle form submission logic here
+    if (selectedFile) {
+      console.log('File submitted:', selectedFile);
+    }
+  };
+
+  const truncateFileName = (fileName: string, maxLength: number): string => {
     if (fileName.length > maxLength) {
       return fileName.slice(0, maxLength) + '...';
     }
@@ -27,7 +34,7 @@ const FileInput = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">  
+    <div className="flex flex-col items-center">
       <input
         type="file"
         ref={inputRef}
@@ -54,6 +61,15 @@ const FileInput = () => {
             <CloseIcon />
           </button>
         </div>
+      )}
+
+      {selectedFile && (
+        <button
+          onClick={handleSubmit}
+          className="mt-4 w-[350px] h-[45px] bg-blue-600 text-white font-medium rounded-2xl transition duration-300 ease-in-out hover:bg-blue-700"
+        >
+          Submit Resume
+        </button>
       )}
     </div>
   );
