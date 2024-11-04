@@ -19,6 +19,13 @@ const FileInput = () => {
     }
   };
 
+  const truncateFileName = (fileName: string, maxLength: number) => {
+    if (fileName.length > maxLength) {
+      return fileName.slice(0, maxLength) + '...';
+    }
+    return fileName;
+  };
+
   return (
     <div className="flex flex-col items-center">  
       <input
@@ -39,7 +46,7 @@ const FileInput = () => {
 
       {selectedFile && (
         <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-2xl p-2.5 mt-4 w-[350px]">
-          <p className="text-sm font-medium m-0 text-blue-800">{selectedFile.name}</p>
+          <p className="text-sm font-medium m-0 text-blue-800">{truncateFileName(selectedFile.name, 40)}</p>
           <button
             onClick={() => setSelectedFile(null)}
             className="w-10 h-10 flex items-center justify-center text-gray-600 bg-transparent rounded-full transition duration-300 ease-in-out hover:text-white hover:bg-blue-500"
