@@ -15,7 +15,7 @@ To abort: sudo docker-compose down
 
 To allow vscode to edit : sudo chown -R $USER `folder name` 
 
-To creat a virtual env : 
+To create a virtual env : 
 python3 -m venv env 
 source env/bin/activate
 
@@ -29,4 +29,6 @@ Docker \
 Gemini \
 Langchain \
 LangGraph \
-Zustand
+Zustand \
+Materail UI
+
