@@ -30,5 +30,5 @@ Gemini \
 Langchain \
 LangGraph \
 Zustand \
-Materail UI
+Material UI
 
