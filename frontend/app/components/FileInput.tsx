@@ -19,7 +19,7 @@ const FileInput = () => {
     }
   };
 
-  const truncateFileName = (fileName: string, maxLength: number) => {
+  const truncateFileName = (fileName: string, maxLength: number):string => {
     if (fileName.length > maxLength) {
       return fileName.slice(0, maxLength) + '...';
     }
