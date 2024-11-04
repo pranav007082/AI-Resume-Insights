@@ -6,7 +6,7 @@ import Logo04 from "@/public/images/logo-04.svg";
 import Logo05 from "@/public/images/logo-05.svg";
 import Logo10 from "@/public/images/logo-10.svg";
 import Logo07 from "@/public/images/logo-07.svg";
-import ModalVideo from "./Modals/modal-video";
+import ModalVideo from "./Modals/ModalVideo";
 import VideoThumb from "@/public/images/hero-image-01.jpg";
 
 export default function HeroHome() {
