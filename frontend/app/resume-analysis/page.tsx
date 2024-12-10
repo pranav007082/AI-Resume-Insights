@@ -1,16 +1,15 @@
 'use client';
-import Sidebar from "../components/sidebar"
-import routes from "../routes";
+// Layout components
 import { usePathname } from 'next/navigation';
 import { useContext, useState } from 'react';
-import {
-  getActiveNavbar,
-  getActiveRoute,
-  isWindowAvailable,
-} from '../utils/navigation';
+
 import React from 'react';
-import Navbar from "../components/navbar";
-import Footer from "../components/Footer/Footer";
+import { getActiveNavbar, getActiveRoute, isWindowAvailable } from '../utils/navigation';
+import Sidebar from '../components/sidebar';
+import routes from '../routes';
+import Navbar from '../components/navbar';
+import Footer from '../components/Footer/Footer';
+
 
 export default function Admin({ children }: { children: React.ReactNode }) {
   // states and functions
