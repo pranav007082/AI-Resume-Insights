@@ -7,7 +7,7 @@ import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
-
+import logo from "../Logo/logo.svg"
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -47,7 +47,7 @@ const menuGroups = [
         ),
         label: "Dashboard",
         route: "#",
-        children: [{ label: "eCommerce", route: "/" }],
+        children: [{ label: "eCommerce", route: "/resume-analysis" }],
       },
       {
         icon: (
@@ -65,7 +65,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Calendar",
+        label: "Impact",
         route: "/calendar",
       },
       {
@@ -88,7 +88,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Profile",
+        label: "Brevity",
         route: "/profile",
       },
       {
@@ -123,7 +123,7 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Forms",
+        label: "Style",
         route: "#",
         children: [
           { label: "Form Elements", route: "/forms/form-elements" },
@@ -158,7 +158,7 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Tables",
+        label: "Sections",
         route: "/tables",
       },
       {
@@ -193,7 +193,7 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Settings",
+        label: "Soft Skills",
         route: "/settings",
       },
     ],
@@ -233,7 +233,7 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Chart",
+        label: "Hard Skills",
         route: "/chart",
       },
       {
@@ -272,7 +272,7 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "UI Elements",
+        label: "Line Analysis",
         route: "#",
         children: [
           { label: "Alerts", route: "/ui/alerts" },
@@ -311,7 +311,7 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Authentication",
+        label: "Cover Letter Writing",
         route: "#",
         children: [
           { label: "Sign In", route: "/auth/signin" },
@@ -337,9 +337,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
           <Link href="/">
             <Image
-              width={176}
-              height={32}
-              src={"/images/logo/logo.svg"}
+              width={50}
+              height={20}
+              src={logo}
               alt="Logo"
               priority
             />

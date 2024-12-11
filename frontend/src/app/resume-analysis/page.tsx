@@ -2,12 +2,13 @@ import ECommerce from "@/components/Dashboard/E-commerce";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
-export const metadata: Metadata = {
-  title:
-    "Next.js E-commerce Dashboard | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Home for TailAdmin Dashboard Template",
+export const metadata = {
+  title: "AI Resume Insights",
+  description: "Elevate Your Resume, Unlock Your Career Potential",
+  icons: {
+    icon: "./favicon1.ico",
+  },
 };
-
 export default function Home() {
   return (
     <>
