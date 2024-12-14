@@ -10,7 +10,7 @@ const Main: React.FC = () => {
       <div></div>
 
       {/* Right half - PDFCanvas */}
-      <div>
+      <div  className="flex justify-end">
         <PDFCanvas />
       </div>
     </div>
