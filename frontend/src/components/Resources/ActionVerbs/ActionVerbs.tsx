@@ -3,12 +3,12 @@
 import React from "react";
 import PDFCanvas from "@/components/PDFCanvas/PDFCanvas";
 
-const Main: React.FC = () => {
+const ActionVerbs: React.FC = () => {
   return (
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
       <div>
-        
+        Action Verbs
       </div>
 
       {/* Right half - PDFCanvas */}
@@ -19,4 +19,4 @@ const Main: React.FC = () => {
   );
 };
 
-export default Main;
+export default ActionVerbs;

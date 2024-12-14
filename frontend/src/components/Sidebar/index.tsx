@@ -85,7 +85,7 @@ const menuGroups = [
         ),
         label: "Brevity",
         route: "#",
-        children: [{ label: "Length & Depth", route: "/resume-analysis" },
+        children: [{ label: "Length & Depth", route: "/factors/brevity/bulletlengths" },
                    { label: "Use of bullets", route: "/calendar" },
                    { label: "Bullet Lengths", route: "/resume-analysis" },
                    { label: "Filler Words", route: "/resume-analysis" },
