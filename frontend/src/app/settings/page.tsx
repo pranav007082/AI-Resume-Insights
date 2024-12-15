@@ -57,8 +57,8 @@ const Settings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          placeholder="Nithin S"
+                          defaultValue="Nithin S"
                         />
                       </div>
                     </div>
@@ -75,8 +75,8 @@ const Settings = () => {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        placeholder="+91 1234567890"
+                        defaultValue="+91 1234567890"
                       />
                     </div>
                   </div>
@@ -119,8 +119,8 @@ const Settings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        placeholder="nithin@gmail.com"
+                        defaultValue="nithin@gmail.com"
                       />
                     </div>
                   </div>
@@ -137,8 +137,8 @@ const Settings = () => {
                       type="text"
                       name="Username"
                       id="Username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      placeholder="nithin1729"
+                      defaultValue="nithin1729"
                     />
                   </div>
 
@@ -222,9 +222,10 @@ const Settings = () => {
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Image
-                        src={"/images/user/user-03.png"}
+                        src={"/images/avatar.jpeg"}
                         width={55}
                         height={55}
+                        className="rounded-full"
                         alt="User"
                       />
                     </div>
