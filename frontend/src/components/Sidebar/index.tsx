@@ -483,15 +483,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       >
         {/* <!-- SIDEBAR HEADER --> */}
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-          <Link href="/">
-            <Image
-              width={50}
-              height={20}
-              src={logo}
-              alt="Logo"
-              priority
-            />
-          </Link>
+        <Link href="/" className="flex items-center gap-2">
+    <Image
+      width={45}
+      height={20}
+      src={logo}
+      alt="Logo"
+      priority
+    />
+    <span className="text-lg font-medium text-white">
+      AI Resume Insights
+    </span>
+  </Link>
 
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -515,9 +518,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         </div>
         {/* <!-- SIDEBAR HEADER --> */}
 
-        <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <div className="scrollbar-hide flex flex-col overflow-y-auto duration-300 ease-linear">
   {/* Sidebar Menu */}
-  <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
+  <nav className="mt-5 px-4 py-0 lg:mt-8 lg:px-6">
     {menuGroups.map((group, groupIndex) => (
       <div key={groupIndex}>
         <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
