@@ -46,13 +46,13 @@ const menuGroups = [
           </svg>
         ),
         label: "Impact",
-        route: "#",
-        children: [{ label: "Quantify Impact", route: "/tables" },
-                   { label: "Repetition", route: "/calendar" },
-                   { label: "Weak Verbs", route: "/profile" },
-                   { label: "Responsibilities", route: "/settings" },
-                   { label: "Verb tenses", route: "/forms/form-elements" },
-                   { label: "Spelling & Consistency", route: "/forms/form-layout" },
+        route: "/factors/impact",
+        children: [{ label: "Quantify Impact", route: "/factors/impact/quantify-impact" },
+                   { label: "Repetition", route: "/factors/impact/repetition" },
+                   { label: "Weak Verbs", route: "/factors/impact/weak-verbs" },
+                   { label: "Responsibilities", route: "/factors/impact/responsibilities" },
+                   { label: "Verb tenses", route: "/factors/impact/verb-tenses" },
+                   { label: "Spelling & Consistency", route: "/factors/impact/spelling-consistencies" },
         ],
       },
       {
@@ -84,12 +84,12 @@ const menuGroups = [
           </svg>
         ),
         label: "Brevity",
-        route: "#",
-        children: [{ label: "Length & Depth", route: "/factors/brevity/bulletlengths" },
-                   { label: "Use of bullets", route: "/calendar" },
-                   { label: "Bullet Lengths", route: "/resume-analysis" },
-                   { label: "Filler Words", route: "/resume-analysis" },
-                   { label: "Page Density", route: "/resume-analysis" }  
+        route: "/factors/brevity",
+        children: [{ label: "Length & Depth", route: "/factors/brevity/length-depth" },
+                   { label: "Use of bullets", route: "/factors/brevity/use-of-bullets" },
+                   { label: "Bullet Lengths", route: "/factors/brevity/bullet-lengths" },
+                   { label: "Filler Words", route: "/factors/brevity/filler-words" },
+                   { label: "Page Density", route: "/factors/brevity/page-density" }  
         ],
       },
       {
@@ -121,14 +121,14 @@ const menuGroups = [
           </svg>
         ),
         label: "Style",
-        route: "#",
-        children: [{ label: "Buzzwords", route: "/resume-analysis" },
-                   { label: "Dates", route: "/calendar" },
-                   { label: "Contact and Personal Details", route: "/resume-analysis" },
-                   { label: "Readability", route: "/resume-analysis" },
-                   { label: "Personal Pronouns", route: "/resume-analysis" },
-                   { label: "Active Voice", route: "/resume-analysis" },
-                   { label: "Consistency", route: "/resume-analysis" },
+        route: "/factors/style",
+        children: [{ label: "Buzzwords", route: "/factors/style/buzzwords" },
+                   { label: "Dates", route: "/factors/style/dates" },
+                   { label: "Contact and Personal Details", route: "/factors/style/contact-personal-details" },
+                   { label: "Readability", route: "/factors/style/readability" },
+                   { label: "Personal Pronouns", route: "/factors/style/personal-pronouns" },
+                   { label: "Active Voice", route: "/factors/style/active-voice" },
+                   { label: "Consistency", route: "/factors/style/consistency" },
         ],
       },
       {
@@ -160,10 +160,10 @@ const menuGroups = [
           </svg>
         ),
         label: "Sections",
-        route: "#",
-        children: [{ label: "Education", route: "/resume-analysis" },
-                   { label: "Unnecessary Sections", route: "/calendar" },
-                   { label: "Skills", route: "/resume-analysis" },
+        route: "/factors/sections",
+        children: [{ label: "Education", route: "/factors/sections/education" },
+                   { label: "Unnecessary Sections", route: "/factors/sections/unnecessary-sections" },
+                   { label: "Skills", route: "/factors/sections/skills" },
         ],
       },
     ],
@@ -200,12 +200,12 @@ const menuGroups = [
           </svg>
         ),
         label: "Soft Skills",
-        route: "#",
-        children: [{ label: "Communication", route: "/resume-analysis" },
-                   { label: "Leadership", route: "/calendar" },
-                   { label: "Analytical", route: "/resume-analysis" },
-                   { label: "Teamwork", route: "/resume-analysis" },
-                   { label: "Drive", route: "/resume-analysis" },
+        route: "/skills/soft-skills",
+        children: [{ label: "Communication", route: "/skills/soft-skills/communication" },
+                   { label: "Leadership", route: "/skills/soft-skills/leadership" },
+                   { label: "Analytical", route: "/skills/soft-skills/analytical" },
+                   { label: "Teamwork", route: "/skills/soft-skills/teamwork" },
+                   { label: "Drive", route: "/skills/soft-skills/drive" },
         ],
       },
       {
@@ -237,8 +237,8 @@ const menuGroups = [
           </svg>
         ),
         label: "Hard Skills",
-        route: "#",
-        children: [{ label: "Quiz", route: "/resume-analysis" }
+        route: "/skills/hard-skills",
+        children: [{ label: "Quiz", route: "/skills/hard-skills/quiz" }
         ],
       },
     ],
@@ -279,7 +279,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Line Analysis",
-        route: "/chart",
+        route: "/tools/line-analysis",
       },
       {
         icon: (
@@ -314,7 +314,7 @@ const menuGroups = [
           </svg>
         ),
         label: "ATS Keywords",
-        route: "/chart",
+        route: "/tools/ats-keywords",
       },
       {
         icon: (
@@ -349,7 +349,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Cover Letter Generation",
-        route: "/chart",
+        route: "/tools/cover-letter-generation",
       },
     ],
   },
@@ -389,7 +389,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Sample Bullets",
-        route: "/chart",
+        route: "/resources/sample-bullets",
       },
       {
         icon: (
@@ -424,7 +424,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Action Verbs",
-        route: "/chart",
+        route: "/resources/action-verbs",
       },
     ],
   },
@@ -464,7 +464,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Reupload Resume",
-        route: "/chart",
+        route: "/resume-upload",
       },
     ],
   },
