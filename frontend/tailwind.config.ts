@@ -343,7 +343,7 @@ const config: Config = {
     },
   },
   plugins: [
-    require("tailwind-scrollbar"),
+    require("tailwind-scrollbar"), require('tailwind-scrollbar-hide')
     
   ],
 };
