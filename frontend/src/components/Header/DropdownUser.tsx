@@ -24,7 +24,8 @@ const DropdownUser = () => {
           <Image
             width={112}
             height={112}
-            src={"/images/user/user-01.png"}
+            src={"/images/avatar.jpeg"}
+            className="rounded-full" // Tailwind class for rounded image
             style={{
               width: "auto",
               height: "auto",
