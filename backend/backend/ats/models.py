@@ -1,14 +1,11 @@
 import uuid
 from django.conf import settings
 from django.db import models
+from useraccount.models import User
 
 class Resume(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,  # Links to your custom User model
-        on_delete=models.CASCADE,
-        related_name='resumes'  # Allows reverse access: user.resumes.all()
-    )
+    user=models.ForeignKey(User,related_name='resumes',on_delete=models.CASCADE)
     pdf = models.FileField(upload_to='uploads/resumes/', blank=True, null=True)
     impact_score = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     quantitative_impact_score = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
