@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
@@ -6,6 +6,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import apiService from "@/app/services/apiService";
 import { useEffect, useState } from "react";
 import { getUserId } from "@/app/lib/actions";
+import Link from "next/link";
 
 const Profile = () => {
   interface UserData {
@@ -44,13 +45,14 @@ const Profile = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
     if (!validTypes.includes(file.type)) {
       setError("Please upload only JPG, JPEG, or PNG files");
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+    if (file.size > 5 * 1024 * 1024) {
+      // 5MB limit
       setError("File size should be less than 5MB");
       return;
     }
@@ -74,7 +76,10 @@ const Profile = () => {
     formData.append("avatar", selectedFile);
 
     try {
-      const response = await apiService.post('/api/auth/update_avatar/', formData);
+      const response = await apiService.post(
+        "/api/auth/update_avatar/",
+        formData,
+      );
 
       if (response.success) {
         setSelectedFile(null);
@@ -87,7 +92,9 @@ const Profile = () => {
       }
     } catch (error: any) {
       console.error("Error uploading avatar:", error);
-      setError(error.response?.data?.message || "An error occurred during upload");
+      setError(
+        error.response?.data?.message || "An error occurred during upload",
+      );
     } finally {
       setUploading(false);
     }
@@ -118,7 +125,9 @@ const Profile = () => {
             <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
               <div className="relative drop-shadow-2">
                 <Image
-                  src={previewUrl || userData?.avatar_url || "/default-avatar.jpg"}
+                  src={
+                    previewUrl || userData?.avatar_url || "/default-avatar.jpg"
+                  }
                   width={160}
                   height={160}
                   className="rounded-full"
@@ -158,35 +167,40 @@ const Profile = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={uploading}
-                  className="inline-flex items-center justify-center rounded-md bg-primary py-2 px-6 text-white hover:bg-opacity-90 disabled:bg-opacity-50"
+                  className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-white hover:bg-opacity-90 disabled:bg-opacity-50"
                 >
-                  {uploading ? 'Uploading...' : 'Update Avatar'}
+                  {uploading ? "Uploading..." : "Update Avatar"}
                 </button>
                 <button
                   onClick={handleCancel}
                   disabled={uploading}
-                  className="inline-flex items-center justify-center rounded-md border border-stroke py-2 px-6 hover:bg-opacity-90 disabled:bg-opacity-50 dark:border-strokedark"
+                  className="inline-flex items-center justify-center rounded-md border border-stroke px-6 py-2 hover:bg-opacity-90 disabled:bg-opacity-50 dark:border-strokedark"
                 >
                   Cancel
                 </button>
               </div>
             )}
 
-            {error && (
-              <div className="mt-4 text-danger">{error}</div>
-            )}
+            {error && <div className="mt-4 text-danger">{error}</div>}
 
             <div className="mt-4">
               <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
                 {userData?.name || "Guest"}
               </h3>
               <p className="font-medium">{userData?.email}</p>
-              <div className="mx-auto max-w-180 mt-4.5">
+              <div className="mx-auto mt-4.5 max-w-180">
                 <h4 className="font-semibold text-black dark:text-white">
                   About Me
                 </h4>
+
                 <p className="mt-4.5">
-                  {userData?.about_me || "Add your Bio"}
+                  {userData?.about_me ? (
+                    userData?.about_me
+                  ) : (
+                    <Link href="/settings">
+                      <>Add your Bio</>
+                    </Link>
+                  )}
                 </p>
               </div>
             </div>
