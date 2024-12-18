@@ -118,7 +118,7 @@ const Profile = () => {
             <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
               <div className="relative drop-shadow-2">
                 <Image
-                  src={previewUrl || userData?.avatar_url || "/images/user/default-avatar.png"}
+                  src={previewUrl || userData?.avatar_url || "/default-avatar.jpg"}
                   width={160}
                   height={160}
                   className="rounded-full"

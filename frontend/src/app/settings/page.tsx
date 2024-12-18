@@ -1,8 +1,109 @@
+"use client";
+
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import apiService from "@/app/services/apiService";
+import { useEffect, useState } from "react";
+import { getUserId } from "@/app/lib/actions";
 
 const Settings = () => {
+  interface UserData {
+    email: string;
+    name?: string;
+    avatar_url?: string;
+    about_me?: string;
+  }
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const fetchUserDetails = async () => {
+    try {
+      const userId = await getUserId();
+      if (!userId) {
+        setError("No user ID found");
+        return;
+      }
+      const response = await apiService.get(`/api/auth/${userId}/`);
+      setUserData(response);
+    } catch (error) {
+      setError("Error fetching user details");
+      console.error("Error fetching user details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (!validTypes.includes(file.type)) {
+      setError("Please upload only JPG, JPEG, or PNG files");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      // 5MB limit
+      setError("File size should be less than 5MB");
+      return;
+    }
+
+    setError(null);
+    setSelectedFile(file);
+
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedFile) return;
+
+    setUploading(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("avatar", selectedFile);
+
+    try {
+      const response = await apiService.post(
+        "/api/auth/update_avatar/",
+        formData,
+      );
+
+      if (response.success) {
+        setSelectedFile(null);
+        setPreviewUrl(null);
+
+        // Fetch updated user details
+        await fetchUserDetails();
+      } else {
+        setError(response.message || "Failed to upload avatar");
+      }
+    } catch (error: any) {
+      console.error("Error uploading avatar:", error);
+      setError(
+        error.response?.data?.message || "An error occurred during upload",
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setError(null);
+  };
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
@@ -57,72 +158,18 @@ const Settings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Nithin S"
-                          defaultValue="Nithin S"
+                          placeholder={userData?.name || "Guest"}
+                          value={userData?.name || "Guest"}
+                          onChange={(e) =>
+                            setUserData({
+                              ...userData,
+                              name: e.target.value,
+                              email: userData?.email || "",
+                            })
+                          } // Ensure you update the state on change
                         />
                       </div>
                     </div>
-
-                    <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder="+91 1234567890"
-                        defaultValue="+91 1234567890"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
-                    >
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        <svg
-                          className="fill-current"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                              fill=""
-                            />
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                              fill=""
-                            />
-                          </g>
-                        </svg>
-                      </span>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="emailAddress"
-                        id="emailAddress"
-                        placeholder="nithin@gmail.com"
-                        defaultValue="nithin@gmail.com"
-                      />
-                    </div>
                   </div>
 
                   <div className="mb-5.5">
@@ -130,24 +177,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
-                      Username
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="Username"
-                      id="Username"
-                      placeholder="nithin1729"
-                      defaultValue="nithin1729"
-                    />
-                  </div>
-
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      BIO
+                      About Me
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -186,8 +216,15 @@ const Settings = () => {
                         name="bio"
                         id="bio"
                         rows={6}
-                        placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        placeholder={userData?.about_me || "Write your bio"}
+                        value={userData?.about_me || "Write your bio"}
+                        onChange={(e) =>
+                          setUserData({
+                            ...userData,
+                            about_me: e.target.value,
+                            email: userData?.email || "",
+                          })
+                        } // Add the onChange handler to update the state
                       ></textarea>
                     </div>
                   </div>
@@ -222,7 +259,11 @@ const Settings = () => {
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Image
-                        src={"/images/avatar.jpeg"}
+                        src={
+                          previewUrl ||
+                          userData?.avatar_url ||
+                          "/default_avatar.jpg"
+                        }
                         width={55}
                         height={55}
                         className="rounded-full"
@@ -252,6 +293,7 @@ const Settings = () => {
                       type="file"
                       accept="image/*"
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                      onChange={handleFileSelect}
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
                       <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
@@ -293,12 +335,14 @@ const Settings = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
+                      onClick={handleCancel}
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
                     >
                       Cancel
                     </button>
                     <button
+                      onClick={handleSubmit}
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                     >
