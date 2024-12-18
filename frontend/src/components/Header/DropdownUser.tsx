@@ -19,26 +19,17 @@ const DropdownUser = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        console.log("Starting to fetch user details");
-        
         const userId = await getUserId();
-        console.log("User ID:", userId);
-
         if (!userId) {
           console.error("No user ID found");
           return;
         }
-
         const response = await apiService.get(`/api/auth/${userId}/`);
-        console.log("API Response:", response);
-
-        // Assuming apiService already parses JSON
         setUserData(response); 
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
     };
-
     fetchUserDetails();
   }, []);
 
