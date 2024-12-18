@@ -7,6 +7,16 @@ const nextConfig = {
     config.externals = [...config.externals, { canvas: "canvas" }];
     return config;
   },
+  images: {
+    remotePatterns: [
+        {
+            protocol: 'http',
+            hostname: 'localhost',
+            port: '8001',
+            pathname: '/**'
+        }
+    ]
+}
 };
 
 export default nextConfig;
