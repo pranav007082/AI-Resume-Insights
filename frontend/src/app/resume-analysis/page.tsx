@@ -13,9 +13,9 @@ export const metadata = {
   },
 };
 
-const HomePage = async({params}:{params:{id:string}})=>{
-  const userId=getUserId();
-  const resume=await apiService.get(`/api/ats/${params.id}`)
+const HomePage = async()=>{
+  const userId=await getUserId();
+  const resume=await apiService.get(`/api/ats/${userId}`)
   console.log("URL",resume.get_pdf_url)
   return (
     <>

@@ -27,7 +27,7 @@ export default function SignIn() {
           const userId=await getUserId();
           const res = await apiService.get(`/api/ats/${userId}/is-exist`);
           if (res.success){
-            router.push(`/resume-analysis/${userId}`)
+            router.push(`/resume-analysis`)
           }
           else{
             router.push('/resume-upload')
