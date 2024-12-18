@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-
+import {useRouter} from "next/navigation";
 import UploadIcon from "@mui/icons-material/Upload";
 import CloseIcon from "@mui/icons-material/Close";
 import apiService from "@/app/services/apiService";
@@ -9,7 +9,7 @@ import apiService from "@/app/services/apiService";
 const FileInput = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+  const router=useRouter();
   const handleUploadClick = () => {
     inputRef.current?.click();
   };
@@ -22,21 +22,25 @@ const FileInput = () => {
   };
 
   const handleSubmit = async () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('pdf', selectedFile); // appending the file to the form data
+    if (!selectedFile) return;
 
-      try {
-        const response=await apiService.post(
-          "/api/ats/upload-resume/",
-          formData
-        )
-        console.log('Upload successful:', response);
-      } catch (error) {
+    const formData = new FormData();
+    formData.append('pdf', selectedFile); // Add the file to the form data
+
+    try {
+        const response = await apiService.post("/api/ats/upload-resume/", formData);
+        
+        if (response.success) {
+            console.log('Upload successful:', response);
+            router.push('/resume-analysis');
+        } else {
+            console.error('Error uploading file:', response);
+        }
+    } catch (error) {
         console.error('Error uploading file:', error);
-      }
     }
-  };
+};
+
 
   const truncateFileName = (fileName: string, maxLength: number): string => {
     if (fileName.length > maxLength) {
