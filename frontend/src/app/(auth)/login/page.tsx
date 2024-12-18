@@ -9,21 +9,22 @@ import "../../styles/style.css";
 
 export default function SignIn() {
   const router =useRouter()
-    
+  
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('')
     const [errors,setErrors]=useState<string[]>([]);
+
     const submitLogin=async(event:any)=>{
       event.preventDefault();
       const formData={
           email:email,
           password:password
       }
-      const response=await apiService.post('/api/auth/login/',JSON.stringify(formData))
+      const response=await apiService.postWithoutToken('/api/auth/login/',JSON.stringify(formData))
       console.log(response)
       if(response.access){
           handleLogin(response.user.pk,response.access,response.refresh)
-          router.push('/')
+          router.push('/resume-upload')
       }else{
           console.log(errors)
           setErrors(response.non_field_errors);
