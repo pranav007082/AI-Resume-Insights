@@ -22,3 +22,8 @@ class AvatarUpdateForm(forms.ModelForm):
             raise forms.ValidationError("The file size exceeds the 5MB limit.")
 
         return avatar
+    
+class UserDetailsUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'about_me']

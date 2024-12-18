@@ -103,6 +103,34 @@ const Settings = () => {
     setPreviewUrl(null);
     setError(null);
   };
+  const handleSave = async () => {
+    setUploading(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("name", userData?.name || "");
+    formData.append("about_me", userData?.about_me || "");
+
+    try {
+      const response = await apiService.post(
+        "/api/auth/update_user_details/",
+        formData,
+      );
+
+      if (response.success) {
+        await fetchUserDetails();
+      } else {
+        setError(response.message || "Failed to update user details");
+      }
+    } catch (error: any) {
+      console.error("Error updating user details:", error);
+      setError(
+        error.response?.data?.message || "An error occurred during update",
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <DefaultLayout>
@@ -118,7 +146,7 @@ const Settings = () => {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form onSubmit={(e) => e.preventDefault()}>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
@@ -231,14 +259,9 @@ const Settings = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
+                      type="button" // Change to button type "button" to avoid form submission
+                      onClick={handleSave} // Trigger save
                     >
                       Save
                     </button>
@@ -273,14 +296,6 @@ const Settings = () => {
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
                         Edit your photo
-                      </span>
-                      <span className="flex gap-2.5">
-                        <button className="text-sm hover:text-primary">
-                          Delete
-                        </button>
-                        <button className="text-sm hover:text-primary">
-                          Update
-                        </button>
                       </span>
                     </div>
                   </div>
@@ -334,13 +349,6 @@ const Settings = () => {
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
-                      onClick={handleCancel}
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
                     <button
                       onClick={handleSubmit}
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"

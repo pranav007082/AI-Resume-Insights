@@ -13,4 +13,5 @@ urlpatterns = [
     path('token/refresh/', get_refresh_view().as_view(), name='token_refresh'),
     path('<uuid:pk>/',api.user_details,name='user_details'),
     path('update_avatar/',api.update_avatar,name='update_avatar'),
+    path('update_user_details/',api.update_user_details,name='update_user_details'),
 ]
