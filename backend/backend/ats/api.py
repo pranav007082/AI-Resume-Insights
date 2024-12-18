@@ -45,3 +45,11 @@ def resume_analysis(request, pk):
             'success': False,
             'message': str(e)
         }, status=500)
+
+@api_view(['GET'])
+def does_resume_analysis_exist(request,pk):
+    resume = Resume.objects.filter(user__id=pk).first()
+    if resume:
+        return JsonResponse({'success':True})
+    else:
+        return JsonResponse({'success':False})

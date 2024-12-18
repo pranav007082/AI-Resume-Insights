@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import apiService from "@/app/services/apiService";
-import { handleLogin } from "@/app/lib/actions";
+import { getUserId, handleLogin } from "@/app/lib/actions";
 import Link from "next/link";
 import "../../styles/style.css";
 
@@ -24,7 +24,14 @@ export default function SignIn() {
       console.log(response)
       if(response.access){
           handleLogin(response.user.pk,response.access,response.refresh)
-          router.push('/resume-upload')
+          const userId=await getUserId();
+          const res = await apiService.get(`/api/ats/${userId}/is-exist`);
+          if (res.success){
+            router.push(`/resume-analysis/${userId}`)
+          }
+          else{
+            router.push('/resume-upload')
+          }
       }else{
           console.log(errors)
           setErrors(response.non_field_errors);
