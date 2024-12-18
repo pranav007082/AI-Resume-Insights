@@ -7,21 +7,31 @@ from .forms import ResumeForm
 from .models import Resume
 
 
-@api_view(['POST','FILES'])
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+
+@api_view(['POST', 'FILES'])
 def upload_resume(request):
-    form=ResumeForm(request.POST,request.FILES)
-    if form.is_valid:
-        resume=form.save(commit=False)
-        resume.user=request.user
+    form = ResumeForm(request.POST, request.FILES)
+    if form.is_valid():
+        resume = form.save(commit=False)
+        resume.user = request.user
         resume.save()
         return JsonResponse({
-            'success':True,
+            'success': True,
+            'message': 'Resume uploaded successfully.'
         })
     else:
-        print(form.errors,form.non_field_errors)
+        # Collect error messages
+        error_messages = {
+            'field_errors': form.errors,
+            'non_field_errors': form.non_field_errors()
+        }
         return JsonResponse({
-            "success":False,
-        },status=400)
+            'success': False,
+            'errors': error_messages,
+        }, status=400)
+
 
 @api_view(['GET'])
 def resume_analysis(request, pk):
