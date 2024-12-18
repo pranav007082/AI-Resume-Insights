@@ -1,15 +1,27 @@
 "use client";
 
-import { useRef, useState } from "react";
-import {useRouter} from "next/navigation";
+import { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import UploadIcon from "@mui/icons-material/Upload";
 import CloseIcon from "@mui/icons-material/Close";
 import apiService from "@/app/services/apiService";
+import { getUserId } from "@/app/lib/actions";
 
 const FileInput = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const router=useRouter();
+  const [userId, setUserId] = useState<string | null>(null); // Maintain state for userId
+  const router = useRouter();
+
+  // Fetch the userId safely after the component mounts
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const id = await getUserId(); // Assuming getUserId is asynchronous
+      setUserId(id);
+    };
+    fetchUserId();
+  }, []);
+
   const handleUploadClick = () => {
     inputRef.current?.click();
   };
@@ -22,25 +34,24 @@ const FileInput = () => {
   };
 
   const handleSubmit = async () => {
-    if (!selectedFile) return;
+    if (!selectedFile || !userId) return;
 
     const formData = new FormData();
-    formData.append('pdf', selectedFile); // Add the file to the form data
+    formData.append("pdf", selectedFile); // Add the file to the form data
 
     try {
-        const response = await apiService.post("/api/ats/upload-resume/", formData);
-        
-        if (response.success) {
-            console.log('Upload successful:', response);
-            router.push('/resume-analysis');
-        } else {
-            console.error('Error uploading file:', response);
-        }
-    } catch (error) {
-        console.error('Error uploading file:', error);
-    }
-};
+      const response = await apiService.post("/api/ats/upload-resume/", formData);
 
+      if (response.success) {
+        console.log("Upload successful:", response);
+        router.push(`/resume-analysis/${userId}`);
+      } else {
+        console.error("Error uploading file:", response);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
 
   const truncateFileName = (fileName: string, maxLength: number): string => {
     if (fileName.length > maxLength) {

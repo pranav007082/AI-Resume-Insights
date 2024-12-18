@@ -5,14 +5,18 @@ import getPDFDocument from "@/utils/getPDFDocument";
 import renderPDFToCanvas from "@/utils/renderPDFToCanvas";
 import { useEffect, useRef } from "react";
 
-
-const PDFCanvas = () => {
+interface PDFCanvasProps {
+  resume_url: string;
+}
+const PDFCanvas:React.FC<PDFCanvasProps> = ({
+  resume_url
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const renderPDF = async () => {
       try {
-        const pdfUrl = window.location.origin + "/dummy.pdf"; // Replace with your PDF URL
+        const pdfUrl = resume_url
         const pageNumber = 1;
 
         const pdfDocument = await getPDFDocument(pdfUrl);

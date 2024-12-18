@@ -3,17 +3,23 @@
 import React from "react";
 import PDFCanvas from "@/components/PDFCanvas/PDFCanvas";
 
-const Main: React.FC = () => {
+interface MainProps{
+  resume_url:string;
+}
+
+const Main: React.FC<MainProps> = ({
+  resume_url
+}) => {
   return (
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
       <div>
-        
+        {resume_url}
       </div>
 
       {/* Right half - PDFCanvas */}
       <div  className="flex justify-end">
-        <PDFCanvas />
+        <PDFCanvas resume_url={resume_url}/>
       </div>
     </div>
   );
