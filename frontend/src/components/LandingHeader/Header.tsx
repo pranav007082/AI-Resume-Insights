@@ -57,7 +57,7 @@ export default function Header() {
               <li>
                 <button
                   onClick={submitLogout}
-                  className="btn-sm bg-gray-800 text-gray-200 shadow hover:bg-gray-50"
+                  className="btn-sm bg-gray-800 text-gray-200 shadow hover:bg-gray-900"
                 >
                   Logout
                 </button>
