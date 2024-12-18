@@ -3,7 +3,12 @@
 import React from "react";
 import PDFCanvas from "@/components/PDFCanvas/PDFCanvas";
 
-const Quiz: React.FC = () => {
+interface QuizProps{
+  resume_url:string;
+}
+const Quiz: React.FC<QuizProps> = ({
+  resume_url
+}) => {
   return (
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
@@ -13,7 +18,7 @@ const Quiz: React.FC = () => {
 
       {/* Right half - PDFCanvas */}
       <div  className="flex justify-end">
-        <PDFCanvas />
+        <PDFCanvas resume_url={resume_url}/>
       </div>
     </div>
   );

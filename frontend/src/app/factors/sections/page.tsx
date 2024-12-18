@@ -1,11 +1,15 @@
+import { getUserId } from "@/app/lib/actions";
+import apiService from "@/app/services/apiService";
 import Sections from "@/components/Factors/Sections/Sections";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 
-const SectionsPage = () => {
+const SectionsPage = async () => {
+  const userId=await getUserId();
+  const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Sections />
+      <Sections resume_url={resume.get_pdf_url} />
     </DefaultLayout>
   );
 };

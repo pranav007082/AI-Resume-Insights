@@ -8,32 +8,26 @@ import { useEffect, useRef } from "react";
 interface PDFCanvasProps {
   resume_url: string;
 }
-
-const PDFCanvas: React.FC<PDFCanvasProps> = ({ resume_url }) => {
+const PDFCanvas:React.FC<PDFCanvasProps> = ({
+  resume_url
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const renderPDF = async () => {
       try {
-        const pdfUrl = resume_url;
+        const pdfUrl = resume_url
+        const pageNumber = 1;
 
-        // Load the PDF document
         const pdfDocument = await getPDFDocument(pdfUrl);
+        const pdfPage = await createPDFPage(pdfDocument, pageNumber);
+
+        const canvas = document.createElement("canvas");
+        await renderPDFToCanvas(pdfPage, canvas);
 
         if (containerRef.current) {
           containerRef.current.innerHTML = ""; // Clear previous content
-        }
-
-        // Iterate through all pages
-        for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
-          const pdfPage = await createPDFPage(pdfDocument, pageNumber);
-
-          const canvas = document.createElement("canvas");
-          await renderPDFToCanvas(pdfPage, canvas);
-
-          if (containerRef.current) {
-            containerRef.current.appendChild(canvas);
-          }
+          containerRef.current.appendChild(canvas);
         }
       } catch (error) {
         console.error("Error rendering PDF:", error);
@@ -41,9 +35,9 @@ const PDFCanvas: React.FC<PDFCanvasProps> = ({ resume_url }) => {
     };
 
     renderPDF();
-  }, [resume_url]);
+  }, []);
 
-  return <div ref={containerRef} style={{ overflowY: "scroll", height: "100%" }}></div>;
+  return <div ref={containerRef}></div>;
 };
 
 export default PDFCanvas;

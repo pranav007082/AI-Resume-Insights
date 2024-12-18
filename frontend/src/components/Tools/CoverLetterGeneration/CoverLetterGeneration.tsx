@@ -3,7 +3,12 @@
 import React from "react";
 import PDFCanvas from "@/components/PDFCanvas/PDFCanvas";
 
-const CoverLetterGeneration: React.FC = () => {
+interface CoverLetterGenerationProps{
+  resume_url:string;
+}
+const CoverLetterGeneration: React.FC<CoverLetterGenerationProps> = ({
+  resume_url
+}) => {
   return (
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
@@ -13,7 +18,7 @@ const CoverLetterGeneration: React.FC = () => {
 
       {/* Right half - PDFCanvas */}
       <div  className="flex justify-end">
-        <PDFCanvas />
+        <PDFCanvas resume_url={resume_url}/>
       </div>
     </div>
   );

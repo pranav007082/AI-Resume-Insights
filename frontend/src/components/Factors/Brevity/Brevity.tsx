@@ -3,7 +3,13 @@
 import React from "react";
 import PDFCanvas from "@/components/PDFCanvas/PDFCanvas";
 
-const Brevity: React.FC = () => {
+interface BrevityProps{
+  resume_url:string;
+}
+
+const Brevity: React.FC<BrevityProps> = ({
+  resume_url
+}) => {
   return (
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
@@ -13,7 +19,7 @@ const Brevity: React.FC = () => {
 
       {/* Right half - PDFCanvas */}
       <div  className="flex justify-end">
-        <PDFCanvas />
+        <PDFCanvas resume_url={resume_url}/>
       </div>
     </div>
   );

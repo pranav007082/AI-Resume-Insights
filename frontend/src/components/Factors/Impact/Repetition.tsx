@@ -3,7 +3,13 @@
 import React from "react";
 import PDFCanvas from "@/components/PDFCanvas/PDFCanvas";
 
-const Repetition: React.FC = () => {
+interface RepetitionProps{
+  resume_url:string;
+}
+
+const Repetition: React.FC<RepetitionProps> = ({
+  resume_url
+}) => {
   return (
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
@@ -13,7 +19,7 @@ const Repetition: React.FC = () => {
 
       {/* Right half - PDFCanvas */}
       <div  className="flex justify-end">
-        <PDFCanvas />
+        <PDFCanvas resume_url={resume_url}/>
       </div>
     </div>
   );

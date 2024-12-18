@@ -1,11 +1,15 @@
+import { getUserId } from "@/app/lib/actions";
+import apiService from "@/app/services/apiService";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Communication from "@/components/Skills/SoftSkills/Communication";
 
 
-const CommunicationPage = () => {
+const CommunicationPage = async () => {
+  const userId=await getUserId();
+  const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Communication/>
+      <Communication resume_url={resume.get_pdf_url}/>
     </DefaultLayout>
   );
 };
