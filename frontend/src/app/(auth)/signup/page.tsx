@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import "../../styles/style.css";
 import apiService from "@/app/services/apiService";
 import { useState } from "react";
@@ -11,32 +11,39 @@ export default function SignUp() {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
-  const submitSignup=async()=>{
-    const formData={
-        email:email,
-        password1:password1,
-        password2:password2
-    }
-    const response = await apiService.post('/api/auth/register/',JSON.stringify(formData))
-    
-    if(response.access){
-        handleLogin(response.user.pk,response.access,response.refresh)
-        router.push('/resume-upload')
-    }else{
-        const tmpErrors:string[]=Object.values(response).map((error:any)=>{
-            return error;
-        })
-        setErrors(tmpErrors)
-    }
-}
-  return (
 
+  const submitSignup = async (e: React.FormEvent) => {
+    e.preventDefault(); 
+
+    const formData = {
+      email: email,
+      password1: password1,
+      password2: password2,
+    };
+
+    const response = await apiService.postWithoutToken(
+      "/api/auth/register/",
+      JSON.stringify(formData),
+    );
+
+    if (response.access) {
+      handleLogin(response.user.pk, response.access, response.refresh);
+      router.push("/resume-upload");
+    } else {
+      const tmpErrors: string[] = Object.values(response).map((error: any) => {
+        return error.message || "An unknown error occurred"; // Assuming error.message exists
+      });
+      setErrors(tmpErrors);
+    }
+  };
+
+  return (
     <>
       <div className="mb-10">
         <h1 className="text-4xl font-bold">Create your account</h1>
       </div>
 
-      <form action={submitSignup }>
+      <form onSubmit={submitSignup}>
         <div className="space-y-4">
           <div>
             <label
@@ -51,7 +58,7 @@ export default function SignUp() {
               className="form-input w-full py-2"
               type="text"
               placeholder="johndoe@gmail.com"
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -69,7 +76,7 @@ export default function SignUp() {
               type="password"
               autoComplete="on"
               placeholder="••••••••"
-              onChange={(e)=>setPassword1(e.target.value)}
+              onChange={(e) => setPassword1(e.target.value)}
               required
             />
           </div>
@@ -87,36 +94,41 @@ export default function SignUp() {
               type="password"
               autoComplete="on"
               placeholder="••••••••"
-              onChange={(e)=>setPassword2(e.target.value)}
+              onChange={(e) => setPassword2(e.target.value)}
               required
             />
           </div>
         </div>
         <div className="mt-6 space-y-3">
-          <button onClick={submitSignup} className="btn w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]">
+          <button
+            type="submit" // Use type="submit" instead of onClick
+            className="btn w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]"
+          >
             Sign up
           </button>
-          {errors.map((error,index)=>{
-                    return (
-                        <div  key={`error_${index}`} className="mt-3 p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
-                                {error}
-                        </div>
-                    )
-                })}
+          {errors.map((error, index) => (
+            <div
+              key={`error_${index}`}
+              className="mb-4 mt-3 rounded-lg bg-red-100 p-4 text-sm text-red-700"
+              role="alert"
+            >
+              {error}
+            </div>
+          ))}
+
           <div className="text-center text-sm italic text-gray-400">Or</div>
-          
         </div>
       </form>
-      <button className="btn w-full bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-100 hover:shadow-md">
-            <span className="flex items-center justify-center">
-              <img
-                src="https://www.google.com/favicon.ico"
-                alt="Google logo"
-                className="h-5 w-5 mr-2"
-              />
-              Continue with Google
-            </span>
-          </button>
+      <button className="btn w-full border border-gray-300 bg-white font-medium text-gray-700 shadow-sm hover:bg-gray-100 hover:shadow-md">
+        <span className="flex items-center justify-center">
+          <img
+            src="https://www.google.com/favicon.ico"
+            alt="Google logo"
+            className="mr-2 h-5 w-5"
+          />
+          Continue with Google
+        </span>
+      </button>
 
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-500">
