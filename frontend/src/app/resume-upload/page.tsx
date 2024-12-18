@@ -7,6 +7,7 @@ import { getUserId } from "../lib/actions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LogoutButton from "@/components/Buttons/LogoutButton";
+import Loader from "@/components/common/Loader";
 
 const ResumeUpload = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const ResumeUpload = () => {
   }, [router]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />; // Use the Loader component here
   }
 
   return (
