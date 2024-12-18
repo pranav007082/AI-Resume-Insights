@@ -1,11 +1,46 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 import LogoutButton from "../Buttons/LogoutButton";
+import { getUserId } from "@/app/lib/actions";
+import apiService from "@/app/services/apiService";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  interface UserData {
+    email: string;
+    name?: string;
+    avatar_url?: string;
+  }
+
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        console.log("Starting to fetch user details");
+        
+        const userId = await getUserId();
+        console.log("User ID:", userId);
+
+        if (!userId) {
+          console.error("No user ID found");
+          return;
+        }
+
+        const response = await apiService.get(`/api/auth/${userId}/`);
+        console.log("API Response:", response);
+
+        // Assuming apiService already parses JSON
+        setUserData(response); 
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -16,7 +51,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Nithin S
+          {userData ? userData.email : "Loading..."}
           </span>
           <span className="block text-xs">Developer</span>
         </span>
