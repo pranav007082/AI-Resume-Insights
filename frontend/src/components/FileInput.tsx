@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 
 import UploadIcon from "@mui/icons-material/Upload";
 import CloseIcon from "@mui/icons-material/Close";
+import apiService from "@/app/services/apiService";
 
 const FileInput = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -20,10 +21,20 @@ const FileInput = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
+  const handleSubmit = async () => {
     if (selectedFile) {
-      console.log("File submitted:", selectedFile);
+      const formData = new FormData();
+      formData.append('pdf', selectedFile); // appending the file to the form data
+
+      try {
+        const response=await apiService.post(
+          "/api/ats/upload-resume/",
+          formData
+        )
+        console.log('Upload successful:', response);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
     }
   };
 
