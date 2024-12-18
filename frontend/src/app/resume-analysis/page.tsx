@@ -1,9 +1,9 @@
-
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Main from "@/components/Dashboard/Main";
 import { getUserId } from "@/app/lib/actions";
 import apiService from "@/app/services/apiService";
+import { redirect } from "next/navigation"; // Import redirect from next/navigation
 
 export const metadata = {
   title: "AI Resume Insights",
@@ -13,17 +13,27 @@ export const metadata = {
   },
 };
 
-const HomePage = async()=>{
-  const userId=await getUserId();
-  const resume=await apiService.get(`/api/ats/${userId}`)
-  console.log("URL",resume.get_pdf_url)
+const HomePage = async () => {
+  const userId = await getUserId();
+
+  // If userId is not found, handle the error
+  if (!userId) {
+    redirect("/resume-upload");
+  }
+
+  // Fetch the resume
+  const resume = await apiService.get(`/api/ats/${userId}`);
+
+  // If resume URL is not found, redirect to /resume-upload
+  if (!resume?.get_pdf_url) {
+    redirect("/resume-upload");
+  }
+
   return (
-    <>
-      <DefaultLayout>
-        <Main resume_url={resume.get_pdf_url}/>
-      </DefaultLayout>
-    </>
+    <DefaultLayout>
+      <Main resume_url={resume.get_pdf_url} />
+    </DefaultLayout>
   );
-}
+};
 
 export default HomePage;
