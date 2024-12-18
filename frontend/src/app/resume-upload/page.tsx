@@ -34,13 +34,9 @@ const ResumeUpload = () => {
   return (
     <>
       <UpperLeftLogo />
-      
-      <h1>User ID: {userId}</h1> {/* Displaying userId for debugging */}
       <div className="flex items-center justify-center min-h-screen">
         <FileInput />
       </div>
-      <hr />
-      <LogoutButton/>
     </>
   );
 };
