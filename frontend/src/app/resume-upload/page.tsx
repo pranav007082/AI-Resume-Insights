@@ -6,6 +6,7 @@ import apiService from "../services/apiService";
 import { getUserId } from "../lib/actions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import LogoutButton from "@/components/Buttons/LogoutButton";
 
 const ResumeUpload = () => {
   const router = useRouter();
@@ -33,10 +34,13 @@ const ResumeUpload = () => {
   return (
     <>
       <UpperLeftLogo />
+      
       <h1>User ID: {userId}</h1> {/* Displaying userId for debugging */}
       <div className="flex items-center justify-center min-h-screen">
         <FileInput />
       </div>
+      <hr />
+      <LogoutButton/>
     </>
   );
 };
