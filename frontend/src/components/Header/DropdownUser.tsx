@@ -44,14 +44,14 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black dark:text-white">
           {userData ? userData.email : "Loading..."}
           </span>
-          <span className="block text-xs">Developer</span>
+          <span className="block text-xs">{userData ? (userData.name || "User") : "Loading..."}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
           <Image
             width={112}
             height={112}
-            src={"/images/avatar.jpeg"}
+            src={userData?.avatar_url || "/default_avatar.jpg"}
             className="rounded-full" // Tailwind class for rounded image
             style={{
               width: "auto",
