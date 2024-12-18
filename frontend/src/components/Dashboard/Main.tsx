@@ -14,7 +14,7 @@ const Main: React.FC<MainProps> = ({
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
       <div>
-        {resume_url}
+        
       </div>
 
       {/* Right half - PDFCanvas */}
