@@ -9,7 +9,7 @@ const VerbTensesPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <VerbTenses resume_url={resume.get_pdf_url}/>
+      <VerbTenses resume_url={resume.get_pdf_url} verb_tenses_score={resume.verb_tenses_score} verb_tenses_feedback={resume.verb_tenses_feedback}/>
     </DefaultLayout>
   );
 };

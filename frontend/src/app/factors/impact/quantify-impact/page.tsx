@@ -9,7 +9,7 @@ const QuantifyImpactPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <QuantifyImpact resume_url={resume.get_pdf_url}/>
+      <QuantifyImpact resume_url={resume.get_pdf_url} quantify_impact_score={resume.quantified_impact_score} quantify_impact_feedback={resume.quantify_impact_feedback}/>
     </DefaultLayout>
   );
 };
