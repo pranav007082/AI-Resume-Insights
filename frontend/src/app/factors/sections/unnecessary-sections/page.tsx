@@ -9,7 +9,7 @@ const UnnecessarySectionPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <UnnecessarySections resume_url={resume.get_pdf_url}/>
+      <UnnecessarySections resume_url={resume.get_pdf_url} unnecessary_sections_score={resume.unnecessary_sections_score} unnecessary_sections_feedback={resume.unnecessary_sections_feedback}/>
     </DefaultLayout>
   );
 };

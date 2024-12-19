@@ -9,7 +9,7 @@ const EducationPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Education resume_url={resume.get_pdf_url}/>
+      <Education resume_url={resume.get_pdf_url} education_score={resume.education_score} education_feedback={resume.education_feedback}/>
     </DefaultLayout>
   );
 };

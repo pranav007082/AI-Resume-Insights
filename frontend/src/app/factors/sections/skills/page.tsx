@@ -9,7 +9,7 @@ const SkillsPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Skills resume_url={resume.get_pdf_url}/>
+      <Skills resume_url={resume.get_pdf_url} skills_score={resume.skills_score} skills_feedback={resume.skills_feedback}/>
     </DefaultLayout>
   );
 };
