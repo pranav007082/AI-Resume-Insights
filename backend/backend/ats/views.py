@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from .forms import ResumeUploadForm
 import PyPDF2
 from django.http import HttpResponse
 from copy import deepcopy
@@ -349,20 +348,21 @@ def resumeReview(resume):
 
     agent = list(agent_subagent_pairs.keys())[0]
     subagent = agent_subagent_pairs[agent][0]
-    conversation = app.invoke({
-                'subagent_feedback': [],
-                'agent_feedback': [],
-                'history': history,
-                'resume': lines,
-                'all_pairs': deepcopy(agent_subagent_pairs),
-                'agent': agent,
-                'subagent': subagent
-            }, {'recursion_limit': 100})
+    # conversation = app.invoke({
+    #             'subagent_feedback': [],
+    #             'agent_feedback': [],
+    #             'history': history,
+    #             'resume': lines,
+    #             'all_pairs': deepcopy(agent_subagent_pairs),
+    #             'agent': agent,
+    #             'subagent': subagent
+    #         }, {'recursion_limit': 100})
 
-    save_conversation(conversation)
+    #save_conversation(conversation)
     conversation=load_conversation()
     # After running your LangChain workflow
     structured_results = structure_resume_analysis(conversation)
-    print(json.dumps(structured_results, indent=2))
-    print(structured_results["subagent_analysis"]["Quantify impact"])
+    return structured_results
+    #print(json.dumps(structured_results, indent=2))
+    #print(structured_results["subagent_analysis"]["Quantify impact"])
 

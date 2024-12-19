@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework_simplejwt.tokens import AccessToken
 from .forms import ResumeForm
 from .models import Resume
-
+from .views import resumeReview
 
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -17,6 +17,10 @@ def upload_resume(request):
         resume = form.save(commit=False)
         resume.user = request.user
         resume.save()
+        resume = Resume.objects.filter(user__email=request.user).first()
+        file_path = resume.pdf.path  # Assuming resume_file is your FileField
+        structured_results = resumeReview(file_path)
+        print(structured_results["subagent_analysis"]["Quantify impact"]["score"])
         return JsonResponse({
             'success': True,
             'message': 'Resume uploaded successfully.'
