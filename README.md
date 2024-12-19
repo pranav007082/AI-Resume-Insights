@@ -7,7 +7,7 @@ The project consists of two main components: the backend (Django) and the fronte
 ## Backend Setup
 
 ### Environment Variables
-Create a `.env` file in the backend directory with the following content:
+Create a `.env.dev` file in the backend directory with the following content:
 
 ```
 DEBUG=1
@@ -20,9 +20,13 @@ SQL_PASSWORD=your_database_password
 SQL_HOST=airesume_db
 SQL_PORT=5432
 DATABASE=postgres
+GOOGLE_API_KEY=your_google_api_key
+OPEN_AI_API_KEY=your_openai_api_key
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
-Replace `your_secret_key_here`, `your_database_user`, and `your_database_password` with your credentials.
+Replace `your_secret_key_here`, `your_database_user`, `your_database_password`, `your_google_api_key`, `your_openai_api_key`, `your_google_client_id` and `your_google_client_secret`  with your credentials.
 
 ### Running the Backend
 
@@ -41,7 +45,7 @@ sudo docker-compose down
 ## Frontend Setup
 
 ### Environment Variables
-Create a `.env` file in the frontend directory with the following content:
+Create a `.env.local` file in the frontend directory with the following content:
 
 ```
 NEXT_PUBLIC_API_HOST=http://localhost:8001
