@@ -9,7 +9,7 @@ const CommunicationPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Communication resume_url={resume.get_pdf_url}/>
+      <Communication resume_url={resume.get_pdf_url} communication_score={resume.communication_score} communication_feedback={resume.communication_feedback}/>
     </DefaultLayout>
   );
 };

@@ -8,7 +8,7 @@ const DrivePage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Drive resume_url={resume.get_pdf_url}/>
+      <Drive resume_url={resume.get_pdf_url} drive_score={resume.drive_score} drive_feedback={resume.drive_feedback}/>
     </DefaultLayout>
   );
 };

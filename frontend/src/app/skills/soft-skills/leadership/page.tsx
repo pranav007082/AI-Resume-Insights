@@ -8,7 +8,7 @@ const LeadershipPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Leadership resume_url={resume.get_pdf_url}/>
+      <Leadership resume_url={resume.get_pdf_url} leadership_score={resume.leadership_score} leadership_feedback={resume.leadership_feedback}/>
     </DefaultLayout>
   );
 };

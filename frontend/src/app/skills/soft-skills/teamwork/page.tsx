@@ -8,7 +8,7 @@ const TeamWorkPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <TeamWork resume_url={resume.get_pdf_url}/>
+      <TeamWork resume_url={resume.get_pdf_url} teamwork_score={resume.teamwork_score} teamwork_feedback={resume.teamwork_feedback}/>
     </DefaultLayout>
   );
 };
