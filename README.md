@@ -91,11 +91,16 @@ To create a virtual env :
 python3 -m venv env 
 source env/bin/activate
 
+To open shell in container:
+
+sudo docker exec -it backend-web-1  bash
+
 # Tech Stack
 
 Django Rest Framwork \
 NextJS \
 Typescript \
+Postgres \
 TailwindCSS \
 Docker \
 Gemini \

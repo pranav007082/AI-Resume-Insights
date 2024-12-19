@@ -7,12 +7,15 @@ from typing import Dict, TypedDict, Optional
 from langgraph.graph import StateGraph, END
 import random
 import time
+import json
 import PyPDF2
 import google.generativeai as genai
 from langchain_google_genai import ChatGoogleGenerativeAI
 import time
 import os
 import json
+import re
+from typing import Dict, List, Union
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -238,51 +241,128 @@ def load_conversation(filename='conversation.json'):
         conversation = json.load(f)
     return conversation
 
+def extract_score(feedback: str) -> float:
+    score_match = re.search(r'(\d+(?:\.\d+)?)\s*/\s*10', feedback)
+    if score_match:
+        return float(score_match.group(1))
+    return 0.0
 
-# Views
-def home(request):
-    return render(request, 'ats/home.html')
+def extract_feedback_text(feedback: str) -> str:
+    # Remove score pattern from text
+    clean_feedback = re.sub(r'\d+(?:\.\d+)?\s*/\s*10', '', feedback)
+    # Remove any remaining numbers at the start
+    clean_feedback = re.sub(r'^\s*\d+\s*[:,.]?\s*', '', clean_feedback)
+    return clean_feedback.strip()
 
-def resumeReview(request):
-    if request.method == 'POST':
-        form = ResumeUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            # Save the resume to the database
-            resume_instance = form.save()
+def structure_resume_analysis(conversation: Dict) -> Dict[str, Union[Dict, List, float]]:
+    """
+    Structures the resume analysis output into a clear dictionary format.
+    
+    Args:
+        conversation: Raw conversation output from the LangChain workflow
+        
+    Returns:
+        Dictionary containing structured analysis with scores and feedback
+    """
+    structured_output = {
+        "subagent_analysis": {},
+        "agent_summaries": {},
+        "final_verdict": {
+            "score": 0.0,
+            "feedback": ""
+        },
+        "overall_scores": {
+            "subagent_scores": {},
+            "agent_scores": {},
+            "final_score": 0.0
+        }
+    }
+    
+    # Process subagent feedback
+    if "subagent_feedback" in conversation:
+        for feedback in conversation["subagent_feedback"]:
+            if ":" in feedback:
+                subagent, content = feedback.split(":", 1)
+                subagent = subagent.strip()
+                content = content.strip()
+                
+                structured_output["subagent_analysis"][subagent] = {
+                    "score": extract_score(content),
+                    "feedback": extract_feedback_text(content)
+                }
+                structured_output["overall_scores"]["subagent_scores"][subagent] = extract_score(content)
+    
+    # Process agent feedback
+    if "agent_feedback" in conversation:
+        for feedback in conversation["agent_feedback"]:
+            if ":" in feedback:
+                agent, content = feedback.split(":", 1)
+                agent = agent.strip()
+                content = content.strip()
+                
+                structured_output["agent_summaries"][agent] = {
+                    "score": extract_score(content),
+                    "feedback": extract_feedback_text(content)
+                }
+                structured_output["overall_scores"]["agent_scores"][agent] = extract_score(content)
+    
+    # Process final verdict
+    if "final_verdict" in conversation:
+        verdict = conversation["final_verdict"]
+        score_match = re.search(r'(\d+(?:\.\d+)?)\s*/\s*10', verdict)
+        if score_match:
+            structured_output["final_verdict"]["score"] = float(score_match.group(1))
+            structured_output["overall_scores"]["final_score"] = float(score_match.group(1))
+        structured_output["final_verdict"]["feedback"] = extract_feedback_text(verdict)
+    
+    # Process detailed history if available
+    if "history" in conversation:
+        structured_output["detailed_analysis"] = {}
+        for category, subcategories in conversation["history"].items():
+            if isinstance(subcategories, dict):
+                structured_output["detailed_analysis"][category] = {
+                    subcat: {
+                        "score": extract_score(feedback),
+                        "feedback": extract_feedback_text(feedback)
+                    } if feedback else {}
+                    for subcat, feedback in subcategories.items()
+                }
 
-            # Extract text from the uploaded PDF resume
-            resume_file = request.FILES['resume']
-            lines = []
-            pdf_reader = PyPDF2.PdfReader(resume_file)
-            num_pages = len(pdf_reader.pages)
-            for page_num in range(num_pages):
-                page = pdf_reader.pages[page_num]
-                page_text = page.extract_text()
-                lines.extend(page_text.split('\n'))
-            
-            # Join lines to pass into the context
-            lines = '\n'.join(lines)
+    return structured_output
+
+def resumeReview(resume):
+    # Extract text from the uploaded PDF resume
+    resume_file = resume
+    lines = []
+    
+    # Open the PDF file using the provided path
+    with open(resume, "rb") as resume_file:
+        pdf_reader = PyPDF2.PdfReader(resume_file)
+        num_pages = len(pdf_reader.pages)
+        for page_num in range(num_pages):
+            page = pdf_reader.pages[page_num]
+            page_text = page.extract_text()
+            lines.extend(page_text.split('\n'))
+
+    lines = '\n'.join(lines)
 
 
-            agent = list(agent_subagent_pairs.keys())[0]
-            subagent = agent_subagent_pairs[agent][0]
-            # conversation = app.invoke({
-            #     'subagent_feedback': [],
-            #     'agent_feedback': [],
-            #     'history': history,
-            #     'resume': lines,
-            #     'all_pairs': deepcopy(agent_subagent_pairs),
-            #     'agent': agent,
-            #     'subagent': subagent
-            # }, {'recursion_limit': 100})
+    agent = list(agent_subagent_pairs.keys())[0]
+    subagent = agent_subagent_pairs[agent][0]
+    conversation = app.invoke({
+                'subagent_feedback': [],
+                'agent_feedback': [],
+                'history': history,
+                'resume': lines,
+                'all_pairs': deepcopy(agent_subagent_pairs),
+                'agent': agent,
+                'subagent': subagent
+            }, {'recursion_limit': 100})
 
-            # save_conversation(conversation)
-            conversation=load_conversation()
+    save_conversation(conversation)
+    conversation=load_conversation()
+    # After running your LangChain workflow
+    structured_results = structure_resume_analysis(conversation)
+    print(json.dumps(structured_results, indent=2))
+    print(structured_results["subagent_analysis"]["Quantify impact"])
 
-            # Render the results
-            context = {'lines': lines,'conversation':conversation}
-            return render(request, 'ats/resumeReview.html', context)
-    else:
-        form = ResumeUploadForm()
-
-    return render(request, 'ats/resumeUpload.html', {'form': form})
