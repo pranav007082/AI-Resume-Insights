@@ -9,7 +9,7 @@ const PersonalPronounsPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <PersonalPronouns resume_url={resume.get_pdf_url}/>
+      <PersonalPronouns resume_url={resume.get_pdf_url} personal_pronouns_score={resume.personal_pronouns_score} personal_pronouns_feedback={resume.personal_pronouns_feedback}/>
     </DefaultLayout>
   );
 };

@@ -9,7 +9,7 @@ const ContactPersonalDetailsPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <ContactPersonalDetails resume_url={resume.get_pdf_url}/>
+      <ContactPersonalDetails resume_url={resume.get_pdf_url} contact_personal_details_score={resume.contact_and_personal_details_score} contact_personal_details_feedback={resume.contact_and_personal_details_feedback}/>
     </DefaultLayout>
   );
 };

@@ -9,7 +9,7 @@ const ReadabilityPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Readability resume_url={resume.get_pdf_url}/>
+      <Readability resume_url={resume.get_pdf_url} readability_score={resume.readability_score} readability_feedback={resume.readability_feedback}/>
     </DefaultLayout>
   );
 };

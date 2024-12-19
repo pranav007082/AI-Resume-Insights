@@ -9,7 +9,7 @@ const ActiveVoicePage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <ActiveVoice resume_url={resume.get_pdf_url}/>
+      <ActiveVoice resume_url={resume.get_pdf_url}active_voice_score={resume.active_voice_score} active_voice_feedback={resume.active_voice_feedback} />
     </DefaultLayout>
   );
 };

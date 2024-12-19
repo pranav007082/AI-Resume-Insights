@@ -9,7 +9,7 @@ const DatesPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Dates resume_url={resume.get_pdf_url}/>
+      <Dates resume_url={resume.get_pdf_url} dates_score={resume.dates_score} dates_feedback={resume.dates_feedback}/>
     </DefaultLayout>
   );
 };

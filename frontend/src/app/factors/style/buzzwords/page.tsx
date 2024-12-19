@@ -9,7 +9,7 @@ const BuzzwordsPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Buzzwords resume_url={resume.get_pdf_url}/>
+      <Buzzwords resume_url={resume.get_pdf_url} buzzwords_score={resume.buzzwords_score} buzzwords_feedback={resume.buzzwords_feedback}/>
     </DefaultLayout>
   );
 };

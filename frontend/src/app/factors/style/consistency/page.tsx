@@ -9,7 +9,7 @@ const ConsistencyPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Consistency resume_url={resume.get_pdf_url}/>
+      <Consistency resume_url={resume.get_pdf_url} consistency_score={resume.consistency_score} consistency_feedback={resume.consistency_feedback}/>
     </DefaultLayout>
   );
 };

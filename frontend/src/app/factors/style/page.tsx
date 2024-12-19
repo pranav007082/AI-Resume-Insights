@@ -9,7 +9,7 @@ const StylePage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Style resume_url={resume.get_pdf_url} />
+      <Style resume_url={resume.get_pdf_url} style_score={resume.style_score} style_feedback={resume.style_feedback}/>
     </DefaultLayout>
   );
 };
