@@ -1,3 +1,4 @@
+import time
 from django.http import JsonResponse
 from .serializers import ResumeSerializer
 from useraccount.models import User

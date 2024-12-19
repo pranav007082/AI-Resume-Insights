@@ -7,11 +7,21 @@ import CloseIcon from "@mui/icons-material/Close";
 import apiService from "@/app/services/apiService";
 import { getUserId } from "@/app/lib/actions";
 
+const Loader = () => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-white/50 z-50">
+      <div className="w-24 h-24 border-8 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
+    </div>
+  );
+};
+
+// Rest of your FileInput component remains the same
 const FileInput = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for error messages
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,23 +40,24 @@ const FileInput = () => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      setErrorMessage(null); // Clear any existing error messages
+      setErrorMessage(null);
     }
   };
 
   const handleSubmit = async () => {
     if (!selectedFile || !userId) return;
-  
+
     const formData = new FormData();
     formData.append("pdf", selectedFile);
-  
+
+    setLoading(true);
+
     try {
       const response = await apiService.post("/api/ats/upload-resume/", formData);
-  
+
       if (response.success) {
         router.push(`/resume-analysis`);
       } else {
-        // Display errors returned by the server
         const errors = response.errors;
         const errorMsg = errors?.non_field_errors?.[0] || 
                          Object.values(errors?.field_errors || {}).flat()[0] || 
@@ -54,7 +65,6 @@ const FileInput = () => {
         setErrorMessage(errorMsg);
       }
     } catch (error: any) {
-      // Handle network or unexpected errors
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         const errorMsg = errors?.non_field_errors?.[0] || 
@@ -64,9 +74,10 @@ const FileInput = () => {
       } else {
         setErrorMessage("A network error occurred. Please try again later.");
       }
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   const truncateFileName = (fileName: string, maxLength: number): string => {
     if (fileName.length > maxLength) {
@@ -76,51 +87,54 @@ const FileInput = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <input
-        type="file"
-        ref={inputRef}
-        className="hidden"
-        onChange={handleFileChange}
-      />
-      <button
-        className="w-[350px] h-[200px] text-lg font-medium flex flex-col items-center justify-center gap-1.5 text-gray-700 border-[1.5px] border-dashed border-blue-600 rounded-2xl cursor-pointer transition duration-300 ease-in-out hover:border-blue-800"
-        onClick={handleUploadClick}
-      >
-        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-t from-blue-500 to-blue-400 text-white">
-          <UploadIcon />
-        </div>
-        Upload Resume
-      </button>
-
-      {selectedFile && (
-        <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-2xl p-2.5 mt-4 w-[350px]">
-          <p className="text-sm font-medium m-0 text-blue-800">
-            {truncateFileName(selectedFile.name, 40)}
-          </p>
-          <button
-            onClick={() => setSelectedFile(null)}
-            className="w-10 h-10 flex items-center justify-center text-gray-600 bg-transparent rounded-full transition duration-100 ease-in-out hover:text-white hover:bg-gradient-to-t from-blue-500 to-blue-400"
-          >
-            <CloseIcon />
-          </button>
-        </div>
-      )}
-
-      {errorMessage && (
-        <div className="text-red-500 text-sm mt-4">
-          {errorMessage}
-        </div>
-      )}
-
-      {selectedFile && (
+    <div className="relative h-screen flex items-center justify-center">
+      {loading && <Loader />}
+      <div className="flex flex-col items-center">
+        <input
+          type="file"
+          ref={inputRef}
+          className="hidden"
+          onChange={handleFileChange}
+        />
         <button
-          onClick={handleSubmit}
-          className="mt-4 w-[350px] h-[45px] bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white font-medium rounded-2xl transition duration-300 ease-in-out hover:bg-blue-700"
+          className="w-[350px] h-[200px] text-lg font-medium flex flex-col items-center justify-center gap-1.5 text-gray-700 border-[1.5px] border-dashed border-blue-600 rounded-2xl cursor-pointer transition duration-300 ease-in-out hover:border-blue-800"
+          onClick={handleUploadClick}
         >
-          Submit Resume
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-t from-blue-500 to-blue-400 text-white">
+            <UploadIcon />
+          </div>
+          Upload Resume
         </button>
-      )}
+
+        {selectedFile && (
+          <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-2xl p-2.5 mt-4 w-[350px]">
+            <p className="text-sm font-medium m-0 text-blue-800">
+              {truncateFileName(selectedFile.name, 40)}
+            </p>
+            <button
+              onClick={() => setSelectedFile(null)}
+              className="w-10 h-10 flex items-center justify-center text-gray-600 bg-transparent rounded-full transition duration-100 ease-in-out hover:text-white hover:bg-gradient-to-t from-blue-500 to-blue-400"
+            >
+              <CloseIcon />
+            </button>
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="text-red-500 text-sm mt-4">
+            {errorMessage}
+          </div>
+        )}
+
+        {selectedFile && (
+          <button
+            onClick={handleSubmit}
+            className="mt-4 w-[350px] h-[45px] bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white font-medium rounded-2xl transition duration-300 ease-in-out hover:bg-blue-700"
+          >
+            Submit Resume
+          </button>
+        )}
+      </div>
     </div>
   );
 };
