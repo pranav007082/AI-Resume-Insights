@@ -9,7 +9,7 @@ const PageDensityPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <PageDensity resume_url={resume.get_pdf_url}/>
+      <PageDensity resume_url={resume.get_pdf_url} page_density_score={resume.page_density_score} page_density_feedback={resume.page_density_feedback}/>
     </DefaultLayout>
   );
 };

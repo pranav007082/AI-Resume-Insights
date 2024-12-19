@@ -9,7 +9,7 @@ const BrevityPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <Brevity resume_url={resume.get_pdf_url} />
+      <Brevity resume_url={resume.get_pdf_url} brevity_score={resume.brevity_score} brevity_feedback={resume.brevity_feedback}/>
     </DefaultLayout>
   );
 };

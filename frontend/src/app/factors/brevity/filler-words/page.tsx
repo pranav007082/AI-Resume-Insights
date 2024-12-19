@@ -9,7 +9,7 @@ const FillerWordsPage = async () => {
   const resume=await apiService.get(`/api/ats/${userId}`)
   return (
     <DefaultLayout>
-      <FillerWords resume_url={resume.get_pdf_url}/>
+      <FillerWords resume_url={resume.get_pdf_url} filler_words_score={resume.filler_words_score} filler_words_feedback={resume.filler_words_feedback}/>
     </DefaultLayout>
   );
 };

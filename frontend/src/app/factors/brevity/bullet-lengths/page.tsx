@@ -10,7 +10,7 @@ const BulletLengthsPage = async () => {
   console.log(resume)
   return (
     <DefaultLayout>
-      <BulletLengths resume_url={resume.get_pdf_url}/>
+      <BulletLengths resume_url={resume.get_pdf_url} bullet_lengths_score={resume.bullet_lengths_score} bullet_lengths_feedback={resume.bullet_lengths_feedback}/>
     </DefaultLayout>
   );
 };
