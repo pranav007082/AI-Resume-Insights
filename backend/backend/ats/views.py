@@ -124,7 +124,9 @@ subagent_desc = {
     "Brevity": {
         "Length": "Keep the resume concise—typically one page for entry-level positions or two for extensive experience.",
         "Bullet Lengths": "Ensure bullet points are concise (1-2 lines), focusing on key achievements and contributions.",
-        "Filler Words": "Minimize filler words to maintain brevity and maximize the impact of each statement."
+        "Filler Words": "Minimize filler words to maintain brevity and maximize the impact of each statement.",
+        "Use of Bullets": "Ensure optimal use of bullet points",
+        "Page Density":"Avoid dense paragraphs for better readability."
     },
     
     "Style": {
@@ -142,6 +144,13 @@ subagent_desc = {
         "Education": "Include academic background, such as degrees, institutions, and relevant coursework or achievements.",
         "Unnecessary Sections": "Omit irrelevant sections, such as hobbies or interests, unless they add specific value.",
         "Skills": "List technical, soft, and transferable skills relevant to the job to demonstrate your capabilities."
+    },
+    "SoftSkills": {
+        "Analytical": "Evaluate the resume's demonstration of analytical problem-solving skills in various roles.",
+        "Communication": "Assess the clarity and effectiveness of communication, including examples of presentations or reports.",
+        "Drive": "Identify instances of motivation, initiative, and persistence in achieving goals.",
+        "Leadership": "Evaluate evidence of leadership abilities, such as managing teams or leading projects.",
+        "Teamwork": "Assess examples of collaboration, cooperation, and effective teamwork in the resume."
     }
 }
 
@@ -150,7 +159,8 @@ agent_desc = {
     "Impact": "Ensure the resume highlights achievements, contributions, and the value brought to employers.",
     "Brevity": "Keep the resume focused and easy to scan, ideally one page for entry-level and two pages for extensive experience.",
     "Style": "Ensure the layout, formatting, and visual appeal are clean, consistent, and professional.",
-    "Sections": "Verify that key resume sections (Summary, Education, Work Experience, Skills) are included and relevant."
+    "Sections": "Verify that key resume sections (Summary, Education, Work Experience, Skills) are included and relevant.",
+    "SoftSkills": "Analyze the resume's demonstration of essential soft skills, including analytical thinking, communication, leadership, and teamwork."
 }
 
 # Prompt for Subagent
@@ -358,7 +368,7 @@ def resumeReview(resume):
     #             'subagent': subagent
     #         }, {'recursion_limit': 100})
 
-    #save_conversation(conversation)
+    # save_conversation(conversation)
     conversation=load_conversation()
     # After running your LangChain workflow
     structured_results = structure_resume_analysis(conversation)
