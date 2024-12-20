@@ -384,8 +384,5 @@ def resumeReview(resume):
     conversation=load_conversation()
     # After running your LangChain workflow
     structured_results = structure_resume_analysis(conversation)
-    print("================",structured_results["agent_summaries"]["SoftSkills"]['score'])
     return structured_results
-    #print(json.dumps(structured_results, indent=2))
-    #print(structured_results["subagent_analysis"]["Quantify impact"])
 
