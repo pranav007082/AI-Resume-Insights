@@ -108,8 +108,8 @@ def upload_resume(request):
         resume.skills_score = safe_get(structured_results, "subagent_analysis.Skills.score", 0)
         resume.skills_feedback = safe_get(structured_results, "subagent_analysis.Skills.feedback", "Error filling this field")
 
-        resume.soft_skills_score = safe_get(structured_results, "subagent_analysis.Soft Skills.score", 0)
-        resume.soft_skills_feedback = safe_get(structured_results, "subagent_analysis.Soft Skills.feedback", "Error filling this field")
+        resume.soft_skills_score = safe_get(structured_results, "agent_summaries.SoftSkills.score", 0)
+        resume.soft_skills_feedback = safe_get(structured_results, "agent_summaries.SoftSkills.feedback", "Error filling this field")
 
         resume.communication_score = safe_get(structured_results, "subagent_analysis.Communication.score", 0)
         resume.communication_feedback = safe_get(structured_results, "subagent_analysis.Communication.feedback", "Error filling this field")
