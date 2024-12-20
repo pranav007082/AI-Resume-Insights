@@ -251,9 +251,22 @@ def load_conversation(filename='conversation.json'):
     return conversation
 
 def extract_score(feedback: str) -> float:
-    score_match = re.search(r'(\d+(?:\.\d+)?)\s*/\s*10', feedback)
-    if score_match:
-        return float(score_match.group(1))
+    """
+    Extract score from feedback text using multiple patterns.
+    """
+    # List of possible score patterns
+    patterns = [
+        r'scores?\s*(?:is|:)?\s*(\d+(?:\.\d+)?)\s*(?:/|\s*out\s*of\s*)10',  # matches "scores 6.7/10" or "score: 7/10"
+        r'(?:with\s+)?(?:a\s+)?score(?:\s+of)?\s*(?::|is)?\s*(\d+(?:\.\d+)?)',  # matches "with a score of 7"
+        r'(\d+(?:\.\d+)?)\s*(?:/|\s*out\s*of\s*)10',  # matches plain "7/10"
+    ]
+    
+    # Try each pattern
+    for pattern in patterns:
+        match = re.search(pattern, feedback, re.IGNORECASE)
+        if match:
+            return float(match.group(1))
+    
     return 0.0
 
 def extract_feedback_text(feedback: str) -> str:
@@ -294,7 +307,6 @@ def structure_resume_analysis(conversation: Dict) -> Dict[str, Union[Dict, List,
                 subagent, content = feedback.split(":", 1)
                 subagent = subagent.strip()
                 content = content.strip()
-                
                 structured_output["subagent_analysis"][subagent] = {
                     "score": extract_score(content),
                     "feedback": extract_feedback_text(content)
