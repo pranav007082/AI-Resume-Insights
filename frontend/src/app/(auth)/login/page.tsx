@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -8,36 +8,64 @@ import Link from "next/link";
 import "../../styles/style.css";
 
 export default function SignIn() {
-  const router = useRouter()
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState<string[]>([]);
+  const router = useRouter();
 
-  const submitLogin = async(event: React.FormEvent) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const submitLogin = async (event: React.FormEvent) => {
     event.preventDefault();
+
     const formData = {
-      email: email,
-      password: password
+      email,
+      password,
+    };
+
+    try {
+      const response = await apiService.postWithoutToken('/api/auth/login/', JSON.stringify(formData));
+      console.log(response);
+
+      if (response.access) {
+        handleLogin(response.user.pk, response.access, response.refresh);
+
+        const userId = await getUserId();
+        const res = await apiService.get(`/api/ats/${userId}/is-exist`);
+
+        if (res.success) {
+          router.push(`/resume-analysis`);
+        } else {
+          router.push('/resume-upload');
+        }
+      } else {
+        handleErrors(response);
+      }
+    } catch (error) {
+      setError("A network error occurred. Please try again.");
     }
-    const response = await apiService.postWithoutToken('/api/auth/login/', JSON.stringify(formData))
-    console.log(response)
-    if(response.access){
-      handleLogin(response.user.pk, response.access, response.refresh)
-      const userId = await getUserId();
-      const res = await apiService.get(`/api/ats/${userId}/is-exist`);
-      if (res.success){
-        router.push(`/resume-analysis`)
-      }
-      else{
-        router.push('/resume-upload')
-      }
+  };
+
+  const handleErrors = (response: any) => {
+    if (!response || typeof response !== "object") {
+      setError("An unknown error occurred.");
+      return;
+    }
+  
+    // Prioritize specific error fields
+    if (response.non_field_errors && response.non_field_errors.length > 0) {
+      setError(response.non_field_errors[0]);
+    } else if (response.detail) {
+      setError(response.detail);
+    } else if (response.email && Array.isArray(response.email)) {
+      setError(response.email[0]);
+    } else if (response.password && Array.isArray(response.password)) {
+      setError(response.password[0]);
     } else {
-      // Ensure errors is always an array
-      const errorMessages = response.non_field_errors || [];
-      setErrors(errorMessages);
+      // Fallback for unknown error structures
+      setError("An unknown error occurred. Please try again.");
     }
-  }
+  };
+  
 
   return (
     <>
@@ -58,6 +86,7 @@ export default function SignIn() {
               className="form-input w-full py-2"
               type="email"
               placeholder="johndoe@email.com"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
@@ -75,31 +104,31 @@ export default function SignIn() {
               type="password"
               autoComplete="on"
               placeholder="••••••••"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
         </div>
         <div className="mt-6">
-          <button 
-            type='submit' 
+          <button
+            type="submit"
             className="btn w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]"
           >
             Log In
           </button>
         </div>
-        
-        {errors.length > 0 && errors.map((error, index) => (
-          <div 
-            key={`error_${index}`} 
-            className="mt-3 p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" 
+
+        {error && (
+          <div
+            className="mt-3 p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg"
             role="alert"
           >
             {error}
           </div>
-        ))}
+        )}
       </form>
-      
+
       <div className="mt-3 mb-3 text-center text-sm italic text-gray-400">Or</div>
       <button className="btn w-full bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-100 hover:shadow-md">
         <span className="flex items-center justify-center">

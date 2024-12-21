@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import "../../styles/style.css";
 import apiService from "@/app/services/apiService";
 import { useState } from "react";
@@ -13,7 +13,7 @@ export default function SignUp() {
   const [errors, setErrors] = useState<string[]>([]);
 
   const submitSignup = async (e: React.FormEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const formData = {
       email: email,
@@ -21,20 +21,42 @@ export default function SignUp() {
       password2: password2,
     };
 
-    const response = await apiService.postWithoutToken(
-      "/api/auth/register/",
-      JSON.stringify(formData),
-    );
+    try {
+      const response = await apiService.postWithoutToken(
+        "/api/auth/register/",
+        JSON.stringify(formData),
+      );
 
-    if (response.access) {
-      handleLogin(response.user.pk, response.access, response.refresh);
-      router.push("/resume-upload");
-    } else {
-      const tmpErrors: string[] = Object.values(response).map((error: any) => {
-        return error.message || "An unknown error occurred"; // Assuming error.message exists
-      });
-      setErrors(tmpErrors);
+      if (response.access) {
+        handleLogin(response.user.pk, response.access, response.refresh);
+        router.push("/resume-upload");
+      } else {
+        handleErrors(response);
+      }
+    } catch (error) {
+      setErrors(["A network error occurred. Please try again."]);
     }
+  };
+
+  const handleErrors = (response: any) => {
+    const tmpErrors: string[] = [];
+    if (response && typeof response === "object") {
+      // Handle field-specific errors
+      for (const [field, messages] of Object.entries(response)) {
+        if (Array.isArray(messages)) {
+          tmpErrors.push(...messages);
+        } else if (typeof messages === "string") {
+          tmpErrors.push(messages);
+        }
+      }
+    } else if (typeof response === "string") {
+      // Handle general string errors
+      tmpErrors.push(response);
+    } else {
+      // Unknown error
+      tmpErrors.push("An unknown error occurred.");
+    }
+    setErrors(tmpErrors);
   };
 
   return (
@@ -48,7 +70,7 @@ export default function SignUp() {
           <div>
             <label
               className="mb-1 block text-sm font-medium text-gray-700"
-              htmlFor="name"
+              htmlFor="email"
             >
               Email
             </label>
@@ -56,7 +78,7 @@ export default function SignUp() {
               id="email"
               name="email"
               className="form-input w-full py-2"
-              type="text"
+              type="email"
               placeholder="johndoe@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -65,7 +87,7 @@ export default function SignUp() {
           <div>
             <label
               className="mb-1 block text-sm font-medium text-gray-700"
-              htmlFor="password"
+              htmlFor="password1"
             >
               Password
             </label>
@@ -83,7 +105,7 @@ export default function SignUp() {
           <div>
             <label
               className="mb-1 block text-sm font-medium text-gray-700"
-              htmlFor="password"
+              htmlFor="password2"
             >
               Repeat Password
             </label>
@@ -101,20 +123,19 @@ export default function SignUp() {
         </div>
         <div className="mt-6 space-y-3">
           <button
-            type="submit" // Use type="submit" instead of onClick
+            type="submit"
             className="btn w-full bg-gradient-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow hover:bg-[length:100%_150%]"
           >
             Sign up
           </button>
-          {errors.map((error, index) => (
+          {errors.length > 0 && (
             <div
-              key={`error_${index}`}
               className="mb-4 mt-3 rounded-lg bg-red-100 p-4 text-sm text-red-700"
               role="alert"
             >
-              {error}
+              {errors[0]}
             </div>
-          ))}
+          )}
 
           <div className="text-center text-sm italic text-gray-400">Or</div>
         </div>
