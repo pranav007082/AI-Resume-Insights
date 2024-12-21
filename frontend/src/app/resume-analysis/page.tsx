@@ -31,7 +31,7 @@ const HomePage = async () => {
 
   return (
     <DefaultLayout>
-      <Main resume_url={resume.get_pdf_url} />
+      <Main resume_url={resume.get_pdf_url} overall_score={resume.overall_score} overall_feedback={resume.overall_feedback}/>
     </DefaultLayout>
   );
 };

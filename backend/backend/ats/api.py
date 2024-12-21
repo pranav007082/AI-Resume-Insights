@@ -31,7 +31,7 @@ def upload_resume(request):
                 return dict_obj
             except (KeyError, TypeError):
                 return default
-
+        print(safe_get(structured_results, "agent_summaries.Impact.score", 0))
         # Fill resume fields safely
         resume.impact_score = safe_get(structured_results, "agent_summaries.Impact.score", 0)
         resume.impact_feedback = safe_get(structured_results, "agent_summaries.Impact.feedback", "Error filling this field")
@@ -125,6 +125,9 @@ def upload_resume(request):
 
         resume.drive_score = safe_get(structured_results, "subagent_analysis.Drive.score", 0)
         resume.drive_feedback = safe_get(structured_results, "subagent_analysis.Drive.feedback", "Error filling this field")
+
+        resume.overall_score= safe_get(structured_results, "final_verdict.score", 0)
+        resume.overall_feedback = safe_get(structured_results, "final_verdict.feedback", "Error filling this field")
 
         resume.save()
                        

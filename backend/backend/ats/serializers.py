@@ -73,6 +73,8 @@ class ResumeSerializer(serializers.ModelSerializer):
             'teamwork_feedback',
             'drive_score',
             'drive_feedback',
+            'overall_score',
+            'overall_feedback',
             'created_at',
             'updated_at',
             'get_pdf_url',
