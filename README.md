@@ -4,6 +4,8 @@ An AI-driven resume feedback system built using Langchain and the Gemini API, wi
 
 The project consists of two main components: the backend (Django) and the frontend (Next.js).
 
+# Development Setup 
+
 ## Backend Setup
 
 ### Environment Variables
@@ -11,12 +13,12 @@ Create a `.env.dev` file in the backend directory with the following content:
 
 ```
 DEBUG=1
-SECRET_KEY=your_secret_key_here
+SECRET_KEY=ai_resume_insights
 DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
 SQL_ENGINE=django.db.backends.postgresql
 SQL_DATABASE=airesumeinsights
-SQL_USER=your_database_user
-SQL_PASSWORD=your_database_password
+SQL_USER=postgresuser
+SQL_PASSWORD=postgrespassword
 SQL_HOST=airesume_db
 SQL_PORT=5432
 DATABASE=postgres
@@ -26,7 +28,9 @@ GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
-Replace `your_secret_key_here`, `your_database_user`, `your_database_password`, `your_google_api_key`, `your_openai_api_key`, `your_google_client_id` and `your_google_client_secret`  with your credentials.
+Replace `your_google_api_key`, `your_openai_api_key`, `your_google_client_id` and `your_google_client_secret`  with your credentials.
+
+Update `SQL_USER` and `SQL_PASSWORD` to match your database credentials. Ensure these align with the settings in the Docker Compose YAML file.
 
 ### Running the Backend
 
