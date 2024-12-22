@@ -75,6 +75,7 @@ class ResumeSerializer(serializers.ModelSerializer):
             'drive_feedback',
             'overall_score',
             'overall_feedback',
+            'cover_letter',
             'created_at',
             'updated_at',
             'get_pdf_url',

@@ -386,3 +386,59 @@ def resumeReview(resume):
     structured_results = structure_resume_analysis(conversation)
     return structured_results
 
+def extract_text_from_pdf(pdf_path):
+    """Extract text content from a PDF file."""
+    text = ""
+    try:
+        with open(pdf_path, 'rb') as file:
+            pdf_reader = PyPDF2.PdfReader(file)
+            for page in pdf_reader.pages:
+                text += page.extract_text()
+        return text
+    except Exception as e:
+        print(f"Error reading PDF: {e}")
+        return None
+    
+
+def extract_name(resume_text):
+    """Extract name from resume using simple pattern matching."""
+    lines = resume_text.split('\n')
+    for line in lines[:5]:
+        line = re.sub(r'[^\w\s]', '', line).strip()
+        words = line.split()
+        if 2 <= len(words) <= 3 and all(word.istitle() for word in words):
+            return ' '.join(words)
+    return "Candidate" 
+
+def generate_cover_letter(resume,cache_file="cover_letter_cache.json"):
+    """Generate a cover letter using Google's Gemini model."""
+    model = genai.GenerativeModel('gemini-pro')
+    resume_text = extract_text_from_pdf(resume)
+    name = extract_name(resume_text)
+
+    prompt = f"""Based on the following resume, write a professional cover letter. 
+    Make it engaging and highlight the key skills and experiences mentioned in the resume.
+    The candidate's name is: {name}
+
+    Resume content:
+    {resume_text}
+
+    Write a formal cover letter that's genuine and showcases the candidate's relevant experience and enthusiasm.
+    """
+
+    try:
+        #response = model.generate_content(prompt)
+        print("Fuck")
+        # Save the response to the cache file
+        # with open(cache_file, "w") as file:
+        #     json.dump({"response": response.text}, file)
+        # print("Generated and cached response")
+
+        # Immediately read and return the content from the cache file
+        with open(cache_file, "r") as file:
+            cached_data = json.load(file)
+            return cached_data["response"]
+        
+    except Exception as e:
+        return f"Error generating cover letter: {e}"
+

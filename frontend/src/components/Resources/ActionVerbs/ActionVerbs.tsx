@@ -14,9 +14,9 @@ const ActionVerbs: React.FC<ActionVerbsProps> = ({
     <div className="grid grid-cols-2 h-screen">
       {/* Left half */}
       <div>
-        Action Verbs
+          <h1 className="text-lg font-semibold text-gray-800">Action verbs</h1>
       </div>
-
+    
       {/* Right half - PDFCanvas */}
       <div  className="flex justify-end">
         <PDFCanvas resume_url={resume_url}/>
