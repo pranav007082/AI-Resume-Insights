@@ -23,12 +23,11 @@ SQL_HOST=airesume_db
 SQL_PORT=5432
 DATABASE=postgres
 GOOGLE_API_KEY=your_google_api_key
-OPEN_AI_API_KEY=your_openai_api_key
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
-Replace `your_google_api_key`, `your_openai_api_key`, `your_google_client_id` and `your_google_client_secret`  with your credentials.
+Replace `your_google_api_key`, `your_google_client_id` and `your_google_client_secret`  with your credentials.
 
 Update `SQL_USER` and `SQL_PASSWORD` to match your database credentials. Ensure these align with the settings in the Docker Compose YAML file.
 
