@@ -115,6 +115,8 @@ class Resume(models.Model):
     overall_feedback=models.TextField(blank=True, null=True)
 
     cover_letter=models.TextField(blank=True, null=True)
+    job_matches=models.TextField(blank=True, null=True)
+
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

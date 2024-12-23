@@ -441,4 +441,39 @@ def generate_cover_letter(resume,cache_file="cover_letter_cache.json"):
         
     except Exception as e:
         return f"Error generating cover letter: {e}"
+    
+def generate_job_matches(resume,cache_file="job_matches_cache.json"):
+    """Generate job matches using Google's Gemini model."""
+    model = genai.GenerativeModel('gemini-pro')
+    resume_text = extract_text_from_pdf(resume)
+
+    prompt = f"""Based on the following resume, identify the top 5 most suitable job roles.
+    For each role, provide a matching percentage (0-100) based on how well the candidate's 
+    skills and experience align with typical requirements for that position.
+    Format your response as:
+    1. [Job Title] - [Match Percentage]%
+    [Brief explanation of match based on specific resume elements]
+
+    Resume content:
+    {resume_text}
+
+    Consider technical skills, experience level, industry background, and educational qualifications 
+    when determining matches and percentages.
+    """
+
+    try:
+        #response = model.generate_content(prompt)
+        #print("Fuck")
+        #Save the response to the cache file
+        # with open(cache_file, "w") as file:
+        #     json.dump({"response": response.text}, file)
+        # print("Generated and cached response")
+
+        # Immediately read and return the content from the cache file
+        with open(cache_file, "r") as file:
+            cached_data = json.load(file)
+            return cached_data["response"]
+        
+    except Exception as e:
+        return f"Error generating cover letter: {e}"
 

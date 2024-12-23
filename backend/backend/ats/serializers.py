@@ -76,6 +76,7 @@ class ResumeSerializer(serializers.ModelSerializer):
             'overall_score',
             'overall_feedback',
             'cover_letter',
+            'job_matches',
             'created_at',
             'updated_at',
             'get_pdf_url',

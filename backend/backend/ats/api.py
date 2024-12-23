@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework_simplejwt.tokens import AccessToken
 from .forms import ResumeForm
 from .models import Resume
-from .views import generate_cover_letter, resumeReview
+from .views import generate_cover_letter, generate_job_matches, resumeReview
 
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -201,6 +201,37 @@ def cover_letter_gen(request):
             'success': True,
             'message': 'Cover letter generated successfully',
             'cover_letter': cover_letter
+        }, status=200)
+    
+    except Exception as e:
+        import traceback
+        traceback.print_exc()  # Log traceback details
+        return JsonResponse({
+            'success': False,
+            'message': f'Error: {str(e)}'
+        }, status=500)
+    
+@api_view(['GET'])
+def job_matches_gen(request):
+    try:
+        # Fetch the most recent resume for the user
+        resume = Resume.objects.filter(user__email=request.user).first()
+
+        if not resume:
+            return JsonResponse({
+                'success': False,
+                'message': 'No resumes found for this user'
+            }, status=404)
+
+        # Generate and save the cover letter
+        job_matches = generate_job_matches(resume.pdf.path)
+        resume.job_matches = job_matches
+        resume.save()
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Job matches generated successfully',
+            'job_matches': job_matches
         }, status=200)
     
     except Exception as e:
