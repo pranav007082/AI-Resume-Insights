@@ -422,7 +422,7 @@ const ActionVerbs: React.FC<ActionVerbsProps> = ({ resume_url }) => {
   return (
     <div className="grid h-screen grid-cols-2">
       {/* Left half */}
-      <div className="overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+      <div className="overflow-y-auto p-4 [scrollbar-width:none] [-ms-overflow-style:none] hover:[-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {/* Heading Section */}
         <div>
           <h2 className="text-2xl font-semibold text-black dark:text-white">
@@ -435,7 +435,7 @@ const ActionVerbs: React.FC<ActionVerbsProps> = ({ resume_url }) => {
         </div>
 
         {/* Cards Section */}
-        <div className="flex flex-col items-center pr-5.5 ">
+        <div className="flex flex-col items-center pr-5.5">
           <VerbCard title={"Strong Accomplishment- Driven Verbs"} verbs={strongAccomplishmentVerbs}/>
           <VerbCard title={"Communication Skills"} verbs={communicationSkills}/>
           <VerbCard title={"Entrepreneurial Skills"} verbs={entrepreneurialSkills}/>
@@ -452,11 +452,12 @@ const ActionVerbs: React.FC<ActionVerbsProps> = ({ resume_url }) => {
       </div>
 
       {/* Right half - PDFCanvas */}
-      <div className="sticky top-0 flex justify-end p-4">
+      <div className="sticky top-0 flex justify-end p-4 overflow-hidden w-full h-full">
         <PDFCanvas resume_url={resume_url} />
       </div>
     </div>
   );
+  
 };
 
 export default ActionVerbs;
