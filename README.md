@@ -28,8 +28,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
 Replace `your_google_api_key`, `your_google_client_id` and `your_google_client_secret`  with your credentials.
-
-Update `SQL_USER` and `SQL_PASSWORD` to match your database credentials. Ensure these align with the settings in the Docker Compose YAML file.
+Ensure these align with the settings in the Docker Compose YAML file.
 
 ### Running the Backend
 
