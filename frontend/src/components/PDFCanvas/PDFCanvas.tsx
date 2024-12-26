@@ -24,7 +24,7 @@ const PDFCanvas:React.FC<PDFCanvasProps> = ({
 
         const canvas = document.createElement("canvas");
         await renderPDFToCanvas(pdfPage, canvas);
-
+       
         if (containerRef.current) {
           containerRef.current.innerHTML = ""; // Clear previous content
           containerRef.current.appendChild(canvas);
