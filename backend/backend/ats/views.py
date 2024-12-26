@@ -18,6 +18,17 @@ from typing import Dict, List, Union
 from dotenv import load_dotenv
 load_dotenv()
 
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import JobDescription, Resume, JobAnalysis
+from .serializers import JobDescriptionSerializer, JobAnalysisSerializer
+
+import logging
+logger = logging.getLogger(__name__)
+from .models import JobDescription, JobAnalysis, Resume
+
 GOOGLE_API_KEY=os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
 model=ChatGoogleGenerativeAI(model='gemini-pro',google_api_key=GOOGLE_API_KEY)
@@ -477,3 +488,98 @@ def generate_job_matches(resume,cache_file="job_matches_cache.json"):
     except Exception as e:
         return f"Error generating cover letter: {e}"
 
+def job_analyzer(job_description_id, cache_file="job_analyzer_cache.json"):
+    """Analyze job description using Google's Gemini model and compare with user's resume."""
+    try:
+        # Fetch the job description
+        job_description = JobDescription.objects.get(id=job_description_id)
+        
+        # Fetch the associated resume
+        resume = Resume.objects.filter(user=job_description.user).first()
+        
+        if not resume:
+            return {
+                "error": "No resume found for this user",
+                "similarity_score": 0,
+                "key_skills": [],
+                "missing_skills": []
+            }
+
+        # Check if cached result exists and is recent (e.g., less than 1 hour old)
+        if os.path.exists(cache_file):
+            with open(cache_file, 'r') as file:
+                cached_data = json.load(file)
+                if cached_data.get('job_id') == job_description_id and \
+                   (time.time() - cached_data.get('timestamp', 0)) < 3600:
+                    return cached_data['response']
+        
+        print(f"API Key: {settings.GOOGLE_API_KEY}")
+
+        # Configure the Google API
+        try:
+            genai.configure(api_key=settings.GOOGLE_API_KEY)
+            model = genai.GenerativeModel('gemini-pro')
+            logger.info("Google API configured successfully")
+        except Exception as e:
+            logger.error(f"Error configuring Google API: {e}")
+            return {
+                "error": "Failed to configure Google API",
+                "similarity_score": 0,
+                "key_skills": [],
+                "missing_skills": []
+            }
+        
+        resume_text = extract_text_from_pdf(resume.pdf.path)
+
+        prompt = f"""Analyze the following resume and job description, and provide:
+        1. A similarity percentage between them
+        2. Key skills that match between the resume and job description
+        3. Skills mentioned in the job description that are missing from the resume
+
+        Format your response as:
+        Similarity: [Match Percentage]%
+        Key Skills: [comma-separated list of skills]
+        Missing Skills: [comma-separated list of skills]
+
+        Resume content:
+        {resume_text}
+
+        Job Description:
+        {job_description.description}
+
+        Consider technical skills, experience level, industry background, and educational qualifications 
+        when determining matches and percentages.
+        """
+
+        response = model.generate_content(prompt)
+        
+        # Ensure response format is correct
+        lines = response.text.split('\n')
+        similarity_score = float(lines[0].split(':')[1].strip().rstrip('%'))
+        key_skills = [skill.strip() for skill in lines[1].split(':')[1].split(',')]
+        missing_skills = [skill.strip() for skill in lines[2].split(':')[1].split(',')]
+
+        result = {
+            "similarity_score": similarity_score,
+            "key_skills": key_skills,
+            "missing_skills": missing_skills
+        }
+
+        # Cache the result
+        with open(cache_file, 'w') as file:
+            json.dump({
+                'job_id': job_description_id,
+                'timestamp': time.time(),
+                'response': result
+            }, file)
+
+        return result
+        
+    except Exception as e:
+        logger.error(f"Error analyzing job description {job_description_id}: {e}")
+        return {
+            "error": str(e),
+            "similarity_score": 0,
+            "key_skills": [],
+            "missing_skills": []
+        }

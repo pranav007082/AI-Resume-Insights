@@ -1,12 +1,23 @@
+import sys
 import time
 from django.http import JsonResponse
-from .serializers import ResumeSerializer
+from .serializers import ResumeSerializer,JobDescriptionAnalysisSerializer
 from useraccount.models import User
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework_simplejwt.tokens import AccessToken
 from .forms import ResumeForm
-from .models import Resume
-from .views import generate_cover_letter, generate_job_matches, resumeReview
+from .models import Resume, JobDescription, JobAnalysis
+from .views import generate_cover_letter, generate_job_matches, resumeReview,job_analyzer
+from rest_framework import status
+
+import traceback
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+from .models import JobDescription, Resume, JobAnalysis
+from .serializers import JobDescriptionSerializer, JobAnalysisSerializer, JobDescriptionAnalysisSerializer
+from .views import job_analyzer
 
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -238,6 +249,104 @@ def job_matches_gen(request):
         import traceback
         traceback.print_exc()  # Log traceback details
         return JsonResponse({
+            'success': False,
+            'message': f'Error: {str(e)}'
+        }, status=500)
+
+User = get_user_model()
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def submit_job_description(request):
+    try:
+        # Get the user from the request
+        user = request.user
+
+        # Validate incoming data with serializer
+        serializer = JobDescriptionSerializer(data=request.data)
+        if serializer.is_valid():
+            # Save the job description with the user
+            job_description = serializer.save(user=user)
+
+            # Analyze the job description
+            analysis_result = job_analyzer(job_description.id)
+            
+            # Handle errors from the analysis tool
+            if "error" in analysis_result:
+                return Response(
+                    {'success': False, 'message': analysis_result["error"]},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
+            # Find the user's resume
+            resume = Resume.objects.filter(user=user).first()
+            if not resume:
+                return Response(
+                    {'success': False, 'message': 'No resume found for this user'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            # Create and save the job analysis record
+            job_analysis = JobAnalysis.objects.create(
+                job_description=job_description,
+                resume=resume,
+                similarity_score=analysis_result['similarity_score'],
+                key_skills=analysis_result['key_skills'],
+                missing_skills=analysis_result['missing_skills']
+            )
+
+            # Serialize the response
+            analysis_serializer = JobAnalysisSerializer(job_analysis)
+            job_description_serializer = JobDescriptionAnalysisSerializer(job_description)
+            return Response(
+                {
+                    'success': True,
+                    'message': 'Job description analyzed successfully',
+                    'data': {
+                        'job_description': job_description_serializer.data,
+                        'job_analysis': analysis_serializer.data,
+                    },
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+        # If serializer is invalid, return validation errors
+        return Response(
+            {'success': False, 'message': 'Invalid data', 'errors': serializer.errors},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'success': False, 'message': f'Error: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_job_analyses(request):
+    try:
+        # Fetch all job descriptions for the user
+        job_descriptions = JobDescription.objects.filter(user=request.user).order_by('-created_at')
+
+        if not job_descriptions:
+            return Response({
+                'success': False,
+                'message': 'No job analyses found for this user'
+            }, status=404)
+
+        # Serialize and return the results
+        serializer = JobDescriptionAnalysisSerializer(job_descriptions, many=True)
+        return Response({
+            'success': True,
+            'message': 'Job analyses retrieved successfully',
+            'data': serializer.data
+        }, status=200)
+
+    except Exception as e:
+        traceback.print_exc()
+        return Response({
             'success': False,
             'message': f'Error: {str(e)}'
         }, status=500)

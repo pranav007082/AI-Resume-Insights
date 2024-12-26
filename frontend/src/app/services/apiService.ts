@@ -50,7 +50,7 @@ const apiService = {
                     reject(error);
                 }))
         })
-    },
+    },  
 
     postWithoutToken: async function(url: string, data: any): Promise<any> {
         console.log('post', url, data);

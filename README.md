@@ -68,6 +68,47 @@ Start the development server:
 npm run dev
 ```
 
+## JobAnalyzer
+# If you want to analyze resume with job description also
+After uploading resume if you click job analyzer button and if u want to input job description and get the score,key_skills and missing skills u need to change post method in apiService.tsx as 
+post: async function (url: string, data: any): Promise<any> {
+        console.log('post', url, data);
+    
+        const token = await getAccessToken();
+        const referer = 'http://127.0.0.1:3000';
+    
+        return new Promise((resolve, reject) => {
+            fetch(${process.env.NEXT_PUBLIC_API_HOST}${url}, {
+                method: 'POST',
+                body: JSON.stringify(data), // Serialize data to JSON
+                headers: {
+                    'Authorization': Bearer ${token},
+                    'Content-Type': 'application/json', // Ensure content type matches the serialized body
+                    'Accept': 'application/json',       // Ensure the server knows the response type
+                    'Referer': referer,
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.json().then((err) => {
+                            reject({ status: response.status, error: err });
+                        });
+                    }
+                    return response.json();
+                })
+                .then((json) => {
+                    console.log('Response:', json);
+                    resolve(json);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    reject(error);
+                });
+        });
+    },
+
+rest everything remains same.
+
 ## Additional Notes
 - Ensure that Docker and Node.js are installed on your system.
 - The backend will be available at `http://localhost:8001` and the frontend at `http://localhost:3000` by default.

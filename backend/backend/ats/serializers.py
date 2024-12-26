@@ -1,9 +1,27 @@
 from rest_framework import serializers
-from .models import Resume
+from .models import Resume,JobDescription, JobAnalysis
 from useraccount.serializers import UserDetailSerializer
+
+class JobDescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobDescription
+        fields = ['id', 'title', 'description', 'created_at']
+
+class JobAnalysisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobAnalysis
+        fields = ['id', 'similarity_score', 'key_skills', 'missing_skills', 'created_at']
+
+class JobDescriptionAnalysisSerializer(serializers.ModelSerializer):
+    analysis = JobAnalysisSerializer(read_only=True)
+
+    class Meta:
+        model = JobDescription
+        fields = ['id', 'title', 'description', 'created_at', 'analysis']
 
 class ResumeSerializer(serializers.ModelSerializer):
     user = UserDetailSerializer(read_only=True, many=False)
+    job_descriptions = JobDescriptionSerializer(many=True, read_only=True)
     
     class Meta:
         model = Resume
@@ -80,4 +98,5 @@ class ResumeSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'get_pdf_url',
+            'job_descriptions',
         )

@@ -2,6 +2,7 @@ import uuid
 from django.conf import settings
 from django.db import models
 from useraccount.models import User
+from django.contrib.auth import get_user_model
 
 class Resume(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -134,3 +135,19 @@ class Resume(models.Model):
         if self.pdf:
             return f'{settings.WEBSITE_URL}{self.pdf.url}'
         return ''
+
+User = get_user_model()
+
+class JobDescription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_descriptions')
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class JobAnalysis(models.Model):
+    job_description = models.OneToOneField(JobDescription, on_delete=models.CASCADE, related_name='analysis')
+    resume = models.ForeignKey('Resume', on_delete=models.CASCADE, related_name='job_analyses')
+    similarity_score = models.FloatField()
+    key_skills = models.JSONField()
+    missing_skills = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
